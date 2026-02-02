@@ -7,7 +7,7 @@ on:
 
 jobs:
   hello:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-22.04
     steps:
       - name: Dire bonjour
         run: echo "Hello, GitHub Actions!"
