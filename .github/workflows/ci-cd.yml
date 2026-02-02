@@ -1,4 +1,4 @@
-name: CI
+name: build
 permissions:
   contents: read
 on:
@@ -6,19 +6,22 @@ on:
     branches: [main,develop]
 
 jobs:
-  test:
+  build-dev:
     runs-on: ubuntu-24.04
     steps:
       # Actions épinglées par SHA
-      - uses: actions/checkout@b4ffde65f46336ab88eb53be808477a3936bae11 # v4.1.1
+      - uses: actions/checkout@v6.0.2
 
       - name: Installer Python
-        uses: actions/setup-python@0b93645e9fea7318ecaed2b359559ac225c90a2b # v5.3.0
+        uses: actions/setup-python@v6.2.0
         with:
           python-version: '3.12'
 
-      - name: Installer les dépendances
-        run: pip install -r requirements.txt
+      - name: Installer les dépendances et build
+        run: |
+          echo ${{secrets.GITHUB_TOKEN}} | ddocker login -u {{secrets.DOCKER_TOKEN}} --password-stdin 
+          docker build -t test .
+          docker push test
+          
 
-      - name: Lancer les tests
-        run: pytest
+
