@@ -24,6 +24,6 @@ jobs:
 
       - name: Installer les dépendances et build
         run: |
-          echo ${{secrets.GITHUB_TOKEN}} | ddocker login -u ${{secrets.DOCKER_TOKEN}} --password-stdin 
+          echo ${{secrets.GITHUB_TOKEN}} | docker login -u ${{secrets.DOCKER_TOKEN}} --password-stdin 
           docker build -t ${{secrets.DOCKER_TOKEN}}/test .
           docker push ${{secrets.DOCKER_TOKEN}}/test
