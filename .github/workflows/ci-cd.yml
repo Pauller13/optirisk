@@ -1,29 +1,19 @@
-name: build
-permissions:
-  contents: read
+name: Hello World
+
 on:
   push:
-    branches: [main,develop]
+    branches: [main]
   workflow_dispatch:
 
-
 jobs:
-  build-dev:
-    runs-on: ubuntu-latest
+  hello:
+    runs-on: ubuntu-24.04
     steps:
-      # Actions épinglées par SHA
-      - uses: actions/checkout@v6.0.2
+      - name: Dire bonjour
+        run: echo "Hello, GitHub Actions!"
 
-      - name: Installer Python
-        uses: actions/setup-python@v6.2.0
-        with:
-          python-version: '3.12'
-
-      - name: Installer les dépendances et build
+      - name: Afficher des infos sur le contexte
         run: |
-          echo ${{secrets.GITHUB_TOKEN}} | ddocker login -u {{secrets.DOCKER_TOKEN}} --password-stdin 
-          docker build -t test .
-          docker push test
-          
-
-
+          echo "Repository: \${{ github.repository }}"
+          echo "Branche: \${{ github.ref_name }}"
+          echo "Auteur du commit: \${{ github.actor }}"
