@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activation de votre compte</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            padding: 20px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        p {
+            color: #555;
+        }
+        .link {
+            margin: 20px 0;
+        }
+        .link a {
+            color: #007BFF;
+            text-decoration: none;
+            font-weight: bold;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 12px;
+            color: #aaa;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Bienvenue {{user}} !</h1>
+        <p>Merci de vous être inscrit sur {{app_name}}. Pour finaliser la création de votre compte, veuillez activer celui-ci en cliquant sur le lien ci-dessous :</p>
+        <div class="link">
+            <a href="{{token}}">Activer mon compte</a>
+        </div>
+        <p>Ce lien est valable pendant <strong>24 heures</strong>. Passé ce délai, vous devrez recommencer le processus d'inscription.</p>
+        <p>Si vous avez des questions ou besoin d’aide, vous pouvez nous contacter à <a href="mailto:optirisk.infos@gmail.com">optirisk.infos@gmail.com</a>.</p>
+        <p>Nous sommes ravis de vous compter parmi nous !</p>
+        <div class="footer">
+            <p>Cordialement,</p>
+            <p>L’équipe {{app_name}}</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,77 @@
+name: optirisk-api
+services:
+  postgres:
+    image: postgres:17
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_DB=optirisk
+    ports:
+      - "5442:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  web:
+    image: lip13/optirisk-api
+    build:
+       context: ../
+       dockerfile: Dockerfile
+    environment:
+      # Django settings
+      SECRET_KEY: django-insecure-ean0&kgpx+&^36@@h7dmnngyc0=cjraiadzt5#46uw*wslep=e
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      CORS_ALLOWED_ORIGINS: "http://localhost:5173"
+      NAME: optirisk
+      USER: admin
+      PASSWORD: admin
+      HOST: POSTGRES
+      PORT: 5432
+      APPNAME: "OPTIRISK"
+      # Email settings
+      EMAIL_BACKEND: django.core.mail.backends.smtp.EmailBackend
+      EMAIL_HOST: smtp.gmail.com
+      EMAIL_PORT: 587
+      EMAIL_USE_TLS: "True"
+      EMAIL_HOST_USER: optirisk.infos@gmail.com
+      EMAIL_HOST_PASSWORD: syeb xcrv xpkd eamf
+      DEFAULT_FROM_EMAIL: ptirisk.infos@gmail.com
+
+      # App URL
+      FRONTLINK: http://localhost:5173
+      APP_NAME: MECALINK
+      APP_MAIL: mecalink.infos@gmail.com
+
+     
+
+      #TOKEN
+      ACCESS_TOKEN_LIFETIME: 60
+      REFRESH_TOKEN_LIFETIME: 1
+
+
+      #CLOUDINARY
+      CLOUDINARY_CLOUD_NAME: doc3zby4w
+      CLOUDINARY_API_KEY: 262791617476456
+      CLOUDINARY_API_SECRET: MzOWHYAiOOEDe3HX-1J1ma1bAug
+
+      #SUPERUSER
+      DEFAULT_USER_USERNAME: admin
+      DEFAULT_USER_PASSWORD: admin
+      DEFAULT_USER_EMAIL: ptrece@yopmail.com
+
+    command: sh -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8090"
+    ports:
+       - "8090:8090"
+
+    depends_on:
+       - postgres
+
+    healthcheck:
+      test: ["CMD", "python", "-c", "import socket; s=socket.socket(); s.connect(('127.0.0.1', 8090))"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+
+volumes:
+  postgres_data:
