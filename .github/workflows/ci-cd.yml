@@ -10,8 +10,6 @@ on:
 
 jobs:
   build-dev:
-    runs-on: ubuntu-latest
-  hello:
     runs-on: ubuntu-24.04
     steps:
       # Actions épinglées par SHA
