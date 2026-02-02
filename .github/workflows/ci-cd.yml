@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-dev:
-    runs-on: ubuntu-24.04
+    runs-on: ubuntu-latest
     steps:
       # Actions épinglées par SHA
       - uses: actions/checkout@v6.0.2
