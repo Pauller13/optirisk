@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: Service
+metadata:
+    name: optirisk-backend-postgres
+    namespace: recrutech
+    labels:
+        app: optirisk-backend-postgres
+spec:
+    selector:
+        app: optirisk-backend-postgres
+    ports:
+        - protocol: TCP
+          port: 5432
+          targetPort: 5432
+          ports:
+          nodePort: 30083  
+    type: NodePort

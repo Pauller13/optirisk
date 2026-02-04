@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+    name: optirisk-backend-deploy
+    namespace: argocd
+spec:
+    destination:
+        namespace: optirisk
+        server: https://kubernetes.default.svc
+    project: optirisk
+    source:
+        helm:
+            parameters:
+                - name: image.repository
+                  value: lip13/optirisk
+                - name: image.tag
+                  value: develop-982ff065
+        path: helm/optirisk-backend-dev
+        repoURL: https://github.com/Pauller13/optirisk.git
+        targetRevision: helm-dev
+    syncPolicy:
+        automated:
+            prune: true
+            selfHeal: true
+        syncOptions:
+            - ApplyOutOfSyncOnly=true

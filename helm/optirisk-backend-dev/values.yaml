@@ -1,0 +1,13 @@
+image:
+  repository: lip13/optirisk
+  tag: latest
+  pullPolicy: Always
+  containerPort: 8000
+db:
+  port: 5432
+  password: admin
+  user: admin
+  name: optirisk-db
+  
+replicaCount: 3
+securityContext: {}

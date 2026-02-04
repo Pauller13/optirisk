@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+    name: optirisk-backend-postgres # Unique name for the deployment
+    namespace: recrutech
+    labels: # Labels to be applied to the Pods in this deployment
+        app: optirisk-backend-postgres
+spec:
+    replicas: 1
+    selector:
+        matchLabels:
+            app: optirisk-backend-postgres
+    template:
+        metadata:
+            labels:
+                app: optirisk-backend-postgres
+        spec:
+            containers:
+                - name: postgres
+                  image: postgres:17
+                  imagePullPolicy: IfNotPresent
+                  env:
+                      - name: NAME
+                        value: {{ .Values.db.name }}
+                      - name: USER
+                        value: {{ .Values.db.user }}        
+                      - name: PASSWORD
+                        value: {{ .Values.db.password }} 
+                  ports:
+                      - containerPort: {{ .Values.db.port }} 
+                  volumeMounts:
+                      - name: optirisk-backend-pg
+                        mountPath: /var/lib/postgresql/data
+            volumes:
+                - name: optirisk-backend-pg
+                  persistentVolumeClaim:
+                      claimName: optirisk-backend-pg-pvc
