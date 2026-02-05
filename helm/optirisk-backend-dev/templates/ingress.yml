@@ -3,7 +3,15 @@ kind: Ingress
 metadata:
   name: api-ingress
   namespace: optirisk
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+    nginx.ingress.kubernetes.io/enable-rewrite-log: "true"
+    nginx.ingress.kubernetes.io/use-regex: "true"
 spec:
+  tls:
+    - hosts:
+      - api-optirisk.paullence.link
+      secretName: letsencrypt-api-optirisk
   ingressClassName: nginx
   rules:
     - host: api-optirisk.paullence.link
