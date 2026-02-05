@@ -2,17 +2,27 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: api-ingress
-  annotations:
-    nginx.ingress.kubernetes.io/rewrite-target: /
+  namespace: optirisk
 spec:
+  ingressClassName: nginx
   rules:
-  - host: api.optirisk
-    http:
-      paths:
-      - path: /
-        pathType: Prefix
-        backend:
-          service:
-            name: optirisk-backend-dev-service
-            port:
-              number: 8003
+    - host: api.optirisk.paullence.link
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: optirisk-backend-dev-service
+                port:
+                  name: http
+    - host: www.api.optirisk.paullence.link
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: optirisk-backend-dev-service
+                port:
+                  name: http
