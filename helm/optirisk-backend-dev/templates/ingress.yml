@@ -15,14 +15,4 @@ spec:
               service:
                 name: optirisk-backend-dev-service
                 port:
-                  name: http-api
-    - host: www.api-optirisk.paullence.link
-      http:
-        paths:
-          - path: /
-            pathType: Prefix
-            backend:
-              service:
-                name: optirisk-backend-dev-service
-                port:
-                  name: http-api
+                  number: 8003
