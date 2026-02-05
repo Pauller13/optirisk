@@ -5,7 +5,7 @@ metadata:
     namespace: optirisk
 spec:
     ports:
-        - name: http
+        - name: http-api
           port: 8003
           targetPort: {{ .Values.image.containerPort }}
     selector:

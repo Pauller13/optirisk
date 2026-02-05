@@ -15,7 +15,7 @@ spec:
               service:
                 name: optirisk-backend-dev-service
                 port:
-                  name: http
+                  name: http-api
     - host: www.api-optirisk.paullence.link
       http:
         paths:
@@ -25,4 +25,4 @@ spec:
               service:
                 name: optirisk-backend-dev-service
                 port:
-                  name: http
+                  name: http-api
