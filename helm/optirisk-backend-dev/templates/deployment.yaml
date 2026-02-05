@@ -36,7 +36,7 @@ spec:
             - name: SECRET_KEY
               value: django-insecure-ean0&kgpx+&^36@@h7dmnngyc0=cjraiadzt5#46uw*wslep=e
             - name: DEBUG
-              value: "True"
+              value: "False"
             - name: ALLOWED_HOSTS
               value: 173.212.234.15,http://api-optirisk.paullence.link
             - name: FRONTLINK
