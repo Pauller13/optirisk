@@ -36,7 +36,7 @@ jobs:
       - name: Ecrire le helm
         run: |
           sed -i "/image\.tag/{n;s|.*|                 value: ${{env.DOCKER_IMAGE}}:${{env.IMAGE_TAG}}|}" helm/optirisk-backend/templates/application.yaml
-          git add helm/maino-frontend/templates/application.yaml
+          git add helm/optirisk-backend/templates/application.yaml
           git commit -m "Updating docker image for:
           Branch  : ${{github.ref_name}}
           Author  : ${{github.actor}}
