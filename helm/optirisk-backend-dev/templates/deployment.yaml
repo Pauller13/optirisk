@@ -21,6 +21,7 @@ spec:
       labels:
         app: optirisk-backend-dev-pod
     spec:
+      restartPolicy: Always
       containers:
         - name: optirisk-backend-dev-pod
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
@@ -31,14 +32,13 @@ spec:
             - name: http
               containerPort: {{ .Values.image.containerPort }}
               protocol: TCP
-          restartPolicy: Always
           env:
             - name: SECRET_KEY
               value: django-insecure-ean0&kgpx+&^36@@h7dmnngyc0=cjraiadzt5#46uw*wslep=e
             - name: DEBUG
               value: "True"
             - name: ALLOWED_HOSTS
-              value: http://173.212.234.15:30085
+              value: 173.212.234.15
             - name: FRONTLINK
               value: http://localhost:5173
             - name: APPNAME
