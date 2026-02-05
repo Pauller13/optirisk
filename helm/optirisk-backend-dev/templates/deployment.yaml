@@ -38,7 +38,7 @@ spec:
             - name: DEBUG
               value: "False"
             - name: ALLOWED_HOSTS
-              value: 173.212.234.15,http://api-optirisk.paullence.link
+              value: 173.212.234.15,api-optirisk.paullence.link
             - name: FRONTLINK
               value: http://localhost:5173
             - name: APPNAME
