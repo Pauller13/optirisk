@@ -2,7 +2,7 @@ name: build
 
 on:
   push:
-    branches: [main,develop, helm-dev]
+    branches: [main,develop,helm-dev]
   workflow_dispatch:
 
 env:
