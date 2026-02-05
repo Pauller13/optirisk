@@ -11,7 +11,8 @@ env:
 jobs:
   build-dev: 
     runs-on: ubuntu-24.04
-    permissions: read-all
+    permissions: 
+      contents: read
     steps:
       - name:  Récuperer le projet
         uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 #v6.0.1
@@ -26,7 +27,8 @@ jobs:
   deploy:
     runs-on: ubuntu-24.04
     needs: build-dev
-    permissions: write-all
+    permissions:
+      contents: write
     steps:
       # Actions épinglées par SHA
       - name:  Récuperer le projet et passe sur helm
@@ -35,9 +37,9 @@ jobs:
           ref: 'helm-dev'
       - name: Ecrire le helm
         run: |
-          git config user.name "github-actions"
-          git config user.email "github-actions@github.com"
-          sed -i "/image\.tag/{n;s/.*/                 value: ${{env.DOCKER_IMAGE}}:${{env.IMAGE_TAG}}/}" helm/optirisk-backend/templates/application.yaml
+          git config user.name "gitops"
+          git config user.email "gitops@gitops.com"
+          sed -i "/image\.tag/{n;s|.*|                 value: ${{env.IMAGE_TAG}}|}" helm/optirisk-backend/templates/application.yaml
           git add helm/optirisk-backend/templates/application.yaml
           git commit -m "Updating docker image for:
           Branch  : ${{github.ref_name}}
