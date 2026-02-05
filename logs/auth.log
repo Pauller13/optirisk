@@ -1,0 +1,34 @@
+[2025-10-03 07:36:32,880] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for username 'Unknown' from IP 127.0.0.1 at 2025-10-03 07:36:32.880121+00:00.
+[2025-10-03 07:37:11,955] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for username 'Unknown' from IP 127.0.0.1 at 2025-10-03 07:37:11.955094+00:00.
+[2025-10-03 07:37:43,526] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for username 'Unknown' from IP 127.0.0.1 at 2025-10-03 07:37:43.525930+00:00.
+[2025-10-03 07:38:29,533] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for username 'Unknown' from IP 127.0.0.1 at 2025-10-03 07:38:29.533652+00:00.
+[2025-10-03 07:39:01,329] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for username 'Unknown' from IP 127.0.0.1 at 2025-10-03 07:39:01.328885+00:00.
+[2025-10-03 07:39:20,838] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for username 'Unknown' from IP 127.0.0.1 at 2025-10-03 07:39:20.838474+00:00.
+[2025-10-03 07:40:08,668] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for username 'Unknown' from IP 127.0.0.1 at 2025-10-03 07:40:08.668429+00:00.
+[2025-10-03 07:43:01,366] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for username 'cc@yopmail.com' from IP 127.0.0.1 at 2025-10-03 07:43:01.365950+00:00.
+[2025-10-03 07:48:48,081] INFO auth_logger: [LOGIN] User 'last_name first_name' logged in from IP 127.0.0.1 at 2025-10-03 07:48:48.081605+00:00.
+[2026-01-18 15:40:02,158] INFO auth_logger: [LOGIN] User 'last_name first_name' logged in from IP 127.0.0.1 at 2026-01-18 15:40:02.158344+00:00.
+[2026-01-18 15:40:46,719] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for username 'cc@yopmail.com' from IP 127.0.0.1 at 2026-01-18 15:40:46.719764+00:00.
+[2026-01-18 15:41:11,091] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for username 'cc@yopmail.com' from IP 127.0.0.1 at 2026-01-18 15:41:11.091451+00:00.
+[2026-01-18 15:41:37,914] INFO auth_logger: [LOGIN] User 'last_name first_name' logged in from IP 127.0.0.1 at 2026-01-18 15:41:37.914538+00:00.
+[2026-01-18 16:06:35,093] INFO auth_logger: [LOGIN] User 'last_name first_name' logged in from IP 127.0.0.1 at 2026-01-18 16:06:35.093745+00:00.
+[2026-01-18 16:06:45,545] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for username 'cc@yopmail.com' from IP 127.0.0.1 at 2026-01-18 16:06:45.545657+00:00.
+[2026-01-18 16:07:29,453] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for username 'cc@yopmail.com' from IP 127.0.0.1 at 2026-01-18 16:07:29.453456+00:00.
+[2026-01-18 16:17:34,912] INFO auth_logger: [LOGIN] User 'last_name first_name' logged in from IP 127.0.0.1 at 2026-01-18 16:17:34.912464+00:00.
+[2026-01-18 16:18:21,462] INFO auth_logger: [LOGIN] User 'last_name first_name' logged in from IP 127.0.0.1 at 2026-01-18 16:18:21.462666+00:00.
+[2026-01-18 16:21:04,405] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for username 'cc@yopmail.com' from IP 127.0.0.1 at 2026-01-18 16:21:04.405349+00:00.
+[2026-01-18 16:21:48,919] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for username 'cc@yopmail.com' from IP 127.0.0.1 at 2026-01-18 16:21:48.919841+00:00.
+[2026-01-18 16:33:41,204] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for email (invalid password) 'cc@yopmail.com' from IP 127.0.0.1 at 2026-01-18 16:33:41.204280+00:00.
+[2026-01-18 16:34:48,209] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for email (invalid password) 'cc@yopmail.com' from IP 127.0.0.1 at 2026-01-18 16:34:48.208893+00:00.
+[2026-01-18 16:35:41,352] WARNING auth_logger: [FAILED LOGIN] Failed login attempt for email (invalid password) 'cc@yopmail.com' from IP 127.0.0.1 at 2026-01-18 16:35:41.352005+00:00.
+[2026-01-18 16:35:51,461] INFO auth_logger: [LOGIN] User 'last_name first_name' logged in from IP 127.0.0.1 at 2026-01-18 16:35:51.460919+00:00.
+[2026-01-18 16:38:56,678] INFO auth_logger: [LOGIN] User 'last_name first_name' logged in from IP 127.0.0.1 at 2026-01-18 16:38:56.678299+00:00.
+[2026-01-18 16:39:30,412] INFO auth_logger: [LOGIN] User 'last_name first_name' logged in from IP 127.0.0.1 at 2026-01-18 16:39:30.411944+00:00.
+[2026-01-18 16:40:03,962] INFO auth_logger: [LOGIN] User 'last_name first_name' logged in from IP 127.0.0.1 at 2026-01-18 16:40:03.962653+00:00.
+[2026-01-18 16:42:38,949] INFO auth_logger: [LOGIN] User 'last_name first_name' (ID: 35) logged in from IP 127.0.0.1 at 2026-01-18 16:42:38.949805+00:00.
+[2026-01-18 16:43:12,723] WARNING auth_logger: [FAILED LOGIN] Invalid password for email 'cc@yopmail.com' from IP 127.0.0.1 at 2026-01-18 16:43:12.723660+00:00.
+[2026-01-18 17:02:07,988] INFO auth_logger: [LOGIN] User 'last_name first_name' (ID: 35) logged in from IP 127.0.0.1 at 2026-01-18 17:02:07.988443+00:00.
+[2026-01-18 17:31:56,753] INFO auth_logger: [LOGIN] User 'last_name first_name' (ID: 35) logged in from IP 127.0.0.1 at 2026-01-18 17:31:56.753140+00:00.
+[2026-01-18 17:32:44,467] INFO auth_logger: [LOGIN] User 'last_name first_name' (ID: 35) logged in from IP 127.0.0.1 at 2026-01-18 17:32:44.467166+00:00.
+[2026-01-24 17:13:41,039] INFO auth_logger: [LOGIN] User 'last_name first_name' (ID: 35) logged in from IP 127.0.0.1 at 2026-01-24 17:13:41.039039+00:00.
+[2026-01-24 21:04:36,392] INFO auth_logger: [LOGIN] User 'last_name first_name' (ID: 35) logged in from IP 127.0.0.1 at 2026-01-24 21:04:36.392508+00:00.
