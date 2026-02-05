@@ -2,7 +2,7 @@ image:
   repository: lip13/optirisk
   tag: latest
   pullPolicy: Always
-  containerPort: 8000
+  containerPort: 8090
   nodePort: 30085
 db:
   port: 5432
