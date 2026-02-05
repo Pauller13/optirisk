@@ -202,7 +202,7 @@ LOGGING = {
         # },
         'auth_handler': {
         'level': 'INFO',
-        'class': 'logging.FileHandler',
+        'class': 'logging.handlers.RotatingFileHandler',
         'filename': str(LOG_DIR / 'auth.log'),
         'formatter': 'standard',
         },
