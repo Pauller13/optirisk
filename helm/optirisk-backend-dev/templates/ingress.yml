@@ -4,7 +4,7 @@ metadata:
   name: api-ingress
   namespace: optirisk
 spec:
-  ingressClassName: traefik
+  ingressClassName: nginx
   rules:
     - host: api-optirisk.paullence.link
       http:
