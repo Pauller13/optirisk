@@ -14,7 +14,7 @@ spec:
                 -   name: image.repository
                     value: lip13/optirisk
                 -   name: image.tag
-                 value: 4884d63c0963e1d7629236b6cb5b0f87cf747b24
+                 value: 7a346de36e69818ced0e8a08dc3f90eb22af60d9
         path: helm/optirisk-backend-dev
         repoURL: https://github.com/Pauller13/optirisk.git
         targetRevision: helm-dev
