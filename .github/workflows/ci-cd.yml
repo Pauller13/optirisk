@@ -2,7 +2,7 @@ name: build
 
 on:
   push:
-    branches: [main,develop]
+    branches: [main,develop, helm-dev]
   workflow_dispatch:
 
 env:
@@ -46,3 +46,4 @@ jobs:
           Author  : ${{github.actor}}
           Time    : ${{ github.event.head_commit.timestamp }}
           Message : ${{github.event.head_commit.message}}"
+          git push
