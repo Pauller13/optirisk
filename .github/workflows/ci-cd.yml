@@ -39,7 +39,7 @@ jobs:
         run: |
           git config user.name "gitops"
           git config user.email "gitops@gitops.com"
-          sed -i 's|\(name: image.tag[[:space:]]*\n[[:space:]]*value:\).*|\1 '"${IMAGE_TAG}"'|' helm/optirisk-backend/templates/application.yaml
+          yq eval -i '.spec.source.helm.parameters[] |= select(.name == "image.tag").value = strenv(IMAGE_TAG)' helm/optirisk-backend/templates/application.yaml
           git add helm/optirisk-backend/templates/application.yaml
           git commit -m "Updating docker image for:
           Branch  : ${{github.ref_name}}
