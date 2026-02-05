@@ -20,14 +20,14 @@ spec:
                   image: postgres:17
                   imagePullPolicy: IfNotPresent
                   env:
-                      - name: NAME
+                      - name: POSTGRES_DB
                         value: {{ .Values.db.name }}
-                      - name: USER
+                      - name: POSTGRES_USER
                         valueFrom:
                             secretKeyRef:
                                 name: {{ .Values.db.secretName }}
                                 key: {{ .Values.db.userKey }}        
-                      - name: PASSWORD
+                      - name: POSTGRES_PASSWORD
                         valueFrom:
                             secretKeyRef:
                                 name: {{ .Values.db.secretName }}
