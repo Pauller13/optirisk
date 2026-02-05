@@ -3,11 +3,15 @@ image:
   tag: latest
   pullPolicy: Always
   containerPort: 8000
+  nodePort: 30085
 db:
   port: 5432
-  password: admin
-  user: admin
   name: optirisk-db
-  
+  secretName: postgres-secret 
+  userKey: postgresuser
+  passwordKey: postgrespassword
+openai:
+  secretName: openiakey-secret  
+  key: openiakey
 replicaCount: 3
 securityContext: {}

@@ -2,7 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
     name: optirisk-backend-postgres
-    namespace: recrutech
+    namespace: optirisk
     labels:
         app: optirisk-backend-postgres
 spec:

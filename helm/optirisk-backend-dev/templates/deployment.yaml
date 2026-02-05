@@ -32,6 +32,78 @@ spec:
               containerPort: {{ .Values.image.containerPort }}
               protocol: TCP
           env:
+              {% comment %} Commun {% endcomment %}
+            - name: SECRET_KEY
+              value: django-insecure-ean0&kgpx+&^36@@h7dmnngyc0=cjraiadzt5#46uw*wslep=e
+            - name: DEBUG
+              value: True
+            - name: ALLOWED_HOSTS
+              value: http://173.212.234.15:30085
+
+            - name: FRONTLINK
+              value: http://localhost:5173
+            - name: APPNAME
+              value: OPTIRISK
+
+              {% comment %} DB {% endcomment %}
+            - name: NAME
+              value: {{ .Values.db.name }}
+            - name: USER
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.db.secretName }}
+                  key: {{ .Values.db.userKey }} 
+            - name: PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.db.secretName }}
+                  key: {{ .Values.db.passwordKey }}
+            - name : HOST
+              value: optirisk-backend-postgres
+            - name: PORT
+              value: {{ .Values.db.port }}
+              
+              {% comment %} API {% endcomment %}
+            - name: CORS_ALLOWED_ORIGINS
+              value: http://localhost:5173
+            - name: ACCESS_TOKEN_LIFETIME
+              value: 60
+            - name: REFRESH_TOKEN_LIFETIME
+              value: 1
+              {% comment %} SMTP {% endcomment %}
+            - name: DEFAULT_FROM_EMAIL
+              value: ptrece8@gmail.com
+            - name: EMAIL_BACKEND
+              value: django.core.mail.backends.smtp.EmailBackend
+            - name:  EMAIL_HOST
+              value: smtp.gmail.com
+            - name: EMAIL_PORT
+              value: 587
+            - name: EMAIL_USE_TLS
+              value: True
+            - name: EMAIL_HOST_USER
+              value: ptrece8@gmail.com
+            - name: EMAIL_HOST_PASSWORD
+              value: 'vtsa jzph celo ydpm'
             
-      imagePullSecrets:
-            - name: regcred
+              {% comment %} CLOUDINARY {% endcomment %}
+            - name: CLOUDINARY_CLOUD_NAME
+              value: dxb4y413d
+            - name: CLOUDINARY_API_KEY
+              value: 746142781291887
+            - name: CLOUDINARY_API_SECRET
+              value: N7Wd9FtDt-oS3mIivW3ldHFQWKU
+
+              {% comment %} OPENIA {% endcomment %}
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.openai.secretName }}
+                  key: {{ .Values.openai.key }}
+          volumeMounts:
+            - name: optirisk-backend-pg
+              mountPath: /var/lib/postgresql/data
+      volumes:
+          - name: optirisk-backend-pg
+            persistentVolumeClaim:
+            claimName: optirisk-backend-pg-pvc

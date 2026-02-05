@@ -8,5 +8,7 @@ spec:
         - name: http
           port: 8003
           targetPort: {{ .Values.image.containerPort }}
+          nodePort: {{ .Values.image.nodePort }}
+    type: NodePort
     selector:
         app: optirisk-backend-dev-pod

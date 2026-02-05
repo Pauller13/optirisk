@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
     name: optirisk-backend-postgres # Unique name for the deployment
-    namespace: recrutech
+    namespace: optirisk
     labels: # Labels to be applied to the Pods in this deployment
         app: optirisk-backend-postgres
 spec:
@@ -23,9 +23,15 @@ spec:
                       - name: NAME
                         value: {{ .Values.db.name }}
                       - name: USER
-                        value: {{ .Values.db.user }}        
+                        valueFrom:
+                            secretKeyRef:
+                                name: {{ .Values.db.secretName }}
+                                key: {{ .Values.db.userKey }}        
                       - name: PASSWORD
-                        value: {{ .Values.db.password }} 
+                        valueFrom:
+                            secretKeyRef:
+                                name: {{ .Values.db.secretName }}
+                                key: {{ .Values.db.passwordKey }}  
                   ports:
                       - containerPort: {{ .Values.db.port }} 
                   volumeMounts:
