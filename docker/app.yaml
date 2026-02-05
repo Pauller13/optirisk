@@ -12,7 +12,7 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   web:
-    image: lip13/optirisk-api
+    image: lip13/optirisk
     build:
        context: ../
        dockerfile: Dockerfile
