@@ -10,7 +10,7 @@ class AnalysisDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnalysisModel
         fields = '__all__'
-        read_only_fields = '__all__'
+        read_only_fields = ['__all__']
 
     def get_progress_percentage(self, obj):
         completed = sum([
