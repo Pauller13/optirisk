@@ -1,0 +1,51 @@
+name: build
+
+on:
+  push:
+    branches: [main,develop]
+  workflow_dispatch:
+
+env:
+    DOCKER_IMAGE: ${{secrets.DOCKER_USERNAME}}/${{github.event.repository.name}}
+    IMAGE_TAG: ${{github.sha}}
+jobs:
+  build-dev: 
+    runs-on: ubuntu-24.04
+    permissions: 
+      contents: read
+    if: ${{github.ref_name == 'develop'}}
+    steps:
+      - name:  Récuperer le projet
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 #v6.0.1
+        
+      - name: Installer les dépendances et build
+        run: |
+          echo ${{secrets.DOCKER_TOKEN}} | docker login -u ${{secrets.DOCKER_USERNAME}} --password-stdin 
+          docker build -t ${{env.DOCKER_IMAGE}}:${{env.IMAGE_TAG}} .
+          docker tag ${{env.DOCKER_IMAGE}}:${{env.IMAGE_TAG}} ${{env.DOCKER_IMAGE}}
+          docker push ${{env.DOCKER_IMAGE}}:${{env.IMAGE_TAG}}
+          docker push ${{env.DOCKER_IMAGE}}
+  deploy-dev:
+    runs-on: ubuntu-24.04
+    needs: build-dev
+    permissions:
+      contents: write
+    if: ${{github.ref_name == 'develop'}}
+    steps:
+      # Actions épinglées par SHA
+      - name:  Récuperer le projet et passe sur helm
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 #v6.0.1
+        with:
+          ref: 'helm-dev'
+      - name: Ecrire le helm
+        run: |
+          git config user.name "gitops"
+          git config user.email "gitops@gitops.com"
+          yq eval -i '.spec.source.helm.parameters[] |= select(.name == "image.tag").value = strenv(IMAGE_TAG)' helm/optirisk-backend/templates/application.yaml
+          git add helm/optirisk-backend/templates/application.yaml
+          git commit -m "Updating docker image for:
+          Branch  : ${{github.ref_name}}
+          Author  : ${{github.actor}}
+          Time    : ${{ github.event.head_commit.timestamp }}
+          Message : ${{github.event.head_commit.message}}"
+          git push

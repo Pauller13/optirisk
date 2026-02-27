@@ -18,7 +18,8 @@ load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
+LOG_DIR = BASE_DIR / "logs"
+LOG_DIR.mkdir(parents=True, exist_ok=True)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
@@ -75,7 +76,7 @@ TEMPLATES = [
         'DIRS': [
             f"{BASE_DIR}/base/templates",
         ],
-        'APP_DIRS': False,
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
@@ -196,13 +197,13 @@ LOGGING = {
         # 'file_logger2': {
         #     'level': 'DEBUG',
         #     'class': 'logging.FileHandler',
-        #     'filename': os.path.join(BASE_DIR, 'other.log'),
+        #     'filename': LOG_DIR / 'other.log',
         #     'formatter': 'standard',
         # },
         'auth_handler': {
         'level': 'INFO',
-        'class': 'logging.FileHandler',
-        'filename': os.path.join(BASE_DIR, 'logs/auth.log'),
+        'class': 'logging.handlers.RotatingFileHandler',
+        'filename': str(LOG_DIR / 'auth.log'),
         'formatter': 'standard',
         },
     },

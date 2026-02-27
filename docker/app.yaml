@@ -12,10 +12,10 @@ services:
       - postgres_data:/var/lib/postgresql/data
 
   web:
-    image: lip13/optirisk-api
     build:
        context: ../
        dockerfile: Dockerfile
+    # image: lip13/optirisk
     environment:
       # Django settings
       SECRET_KEY: django-insecure-ean0&kgpx+&^36@@h7dmnngyc0=cjraiadzt5#46uw*wslep=e
