@@ -76,7 +76,7 @@ TEMPLATES = [
         'DIRS': [
             f"{BASE_DIR}/base/templates",
         ],
-        'APP_DIRS': False,
+        'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.request',
