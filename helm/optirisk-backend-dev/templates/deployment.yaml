@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: optirisk-backend-dev-pod
+  name: optirisk-backend-deploy
   namespace: optirisk
   labels:
     app: optirisk-backend-dev-pod
@@ -23,7 +23,7 @@ spec:
     spec:
       restartPolicy: Always
       containers:
-        - name: optirisk-backend-dev-pod
+        - name: optirisk-backend-dev-container
           image: "{{ .Values.image.repository }}:{{ .Values.image.tag | default .Chart.AppVersion }}"
           imagePullPolicy: {{ .Values.image.pullPolicy }}
           securityContext:
