@@ -113,7 +113,6 @@ class CustomUserViewSet(ModelViewSet):
                 return status_service.status400(data=serializer.errors)
             password = serializer.validated_data.get('password')
             is_correct_password = check_password(password, instance.password)
-            print(is_correct_password)
             if not is_correct_password:
                 return status_service.status400(data={},message="Mot de passe incorrect")
             new_password = serializer.validated_data.get('new_password')
