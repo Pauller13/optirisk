@@ -9,6 +9,7 @@ from api.api_views import (
     CustomTokenView,
     ia_api,
 )
+from api.api_views.dashboard_api_view import DashboardAPIView
 from api.api_views.picture_api_view import PictureAPIView
 from api.viewsets import (
     CustomUserViewSet,
@@ -38,8 +39,9 @@ urlpatterns = [
     path('update-password', CustomUserViewSet.as_view({'put': 'update_password'}), name='update-password'),
     path('delete-my-account', CustomUserViewSet.as_view({'delete': 'delete_account'}), name='delete-my-account'),
     path('profile-picture', PictureAPIView.as_view(), name='update-profile-picture'),
-    path('api/ai/swot/', ia_api.generate_swot_view, name='ai_generate_swot'),
-    path('api/ai/scenarios/', ia_api.generate_scenarios_view, name='ai_generate_scenarios'),
-    path('api/ai/assets/', ia_api.suggest_assets_view, name='ai_suggest_assets'),
-    path('api/ai/measures/', ia_api.generate_measures_view, name='ai_generate_measures'),
+    path('dashboard/stats', DashboardAPIView.as_view(), name='dashboard-stats'),
+    path('ai/swot/', ia_api.generate_swot_view, name='ai_generate_swot'),
+    path('ai/scenarios/', ia_api.generate_scenarios_view, name='ai_generate_scenarios'),
+    path('ai/assets/', ia_api.suggest_assets_view, name='ai_suggest_assets'),
+    path('ai/measures/', ia_api.generate_measures_view, name='ai_generate_measures'),
 ]

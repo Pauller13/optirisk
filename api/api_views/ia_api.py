@@ -6,8 +6,10 @@ from rest_framework.response import Response
 from rest_framework import status
 
 from base.services.generate_with_ai import GenerateIA
+from base.services.status_service import StatusService
 
-
+status_service = StatusService()
+    
 # =========================
 # SWAGGER SCHEMAS
 # =========================
@@ -76,7 +78,7 @@ def generate_swot_view(request):
         generator = GenerateIA()
         context = request.data.get("context", "Banque & Finance")
         swot = generator.generate_swot(context)
-        return Response(swot)
+        return status_service(data=swot)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -93,7 +95,7 @@ def generate_scenarios_view(request):
         business_values = request.data.get("business_values", [])
         risk_sources = request.data.get("risk_sources", [])
         scenarios = generator.generate_strategic_scenarios(business_values, risk_sources)
-        return Response(scenarios)
+        return status_service(data=scenarios)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -109,7 +111,7 @@ def suggest_assets_view(request):
         generator = GenerateIA()
         context = request.data.get("context", "Banque & Finance")
         assets = generator.suggest_assets(context)
-        return Response(assets)
+        return status_service(data=assets)
     except Exception as e:
         return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
