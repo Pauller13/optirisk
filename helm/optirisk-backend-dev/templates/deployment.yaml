@@ -76,9 +76,9 @@ spec:
             - name: EMAIL_USE_TLS
               value: "True"
             - name: EMAIL_HOST_USER
-              value: ptrece8@gmail.com
+              value: optirisk.infos@gmail.com
             - name: EMAIL_HOST_PASSWORD
-              value: "vtsa jzph celo ydpm"
+              value: "jgzd wjhe uoek pucg"
             - name: CLOUDINARY_CLOUD_NAME
               value: dxb4y413d
             - name: CLOUDINARY_API_KEY
