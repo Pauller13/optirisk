@@ -23,4 +23,4 @@ class Setup2FAView(APIView):
         user = request.user
         user.is_2fa_enabled = True
         user.save()
-        return response_status.status200(data={"otp_auth_url": uri})
+        return response_status.status200(data={}, message="2FA activate")
