@@ -4,14 +4,30 @@ from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import AccessToken
 from base.services.status_service import StatusService
 from user.models.custom_user_model import CustomUserModel
-
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 response_status = StatusService()
+
+schema =  openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    description="Verify 2FA body",
+    properties={
+        "temp_token": openapi.Schema(
+            type=openapi.TYPE_STRING,
+            description="Token temporaire",
+        ),
+        "code": openapi.Schema(
+            type=openapi.TYPE_STRING,
+            description="Code donné par google authenticator",
+        ),
+    }
+)
 
 
 class Verify2FAView(APIView):
     permission_classes = [AllowAny]
-
+    @swagger_auto_schema(request_body=schema, responses={200: None})
     def post(self, request):
         token = request.data.get('temp_token')
         code = request.data.get('code')

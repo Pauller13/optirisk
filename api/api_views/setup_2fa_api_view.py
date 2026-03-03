@@ -7,6 +7,7 @@ from base.services.status_service import StatusService
 response_status = StatusService()
 
 
+
 class Setup2FAView(APIView):
     permission_classes = [IsAuthenticated]
 

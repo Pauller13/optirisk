@@ -6,13 +6,28 @@ from api.serializers.token.custom_token_serializer import CustomTokenObtainPairS
 from django.contrib.auth import get_user_model
 from django.contrib.auth.signals import user_logged_in
 from django.utils.timezone import now
-from rest_framework_simplejwt.tokens import RefreshToken, AccessToken
+from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.settings import api_settings
-from datetime import timedelta
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 logger = logging.getLogger('auth_logger')
 User = get_user_model()
 status_service = StatusService()
+
+login_schema = openapi.Schema(
+    type=openapi.TYPE_OBJECT,
+    properties={
+        "email": openapi.Schema(
+            type=openapi.TYPE_STRING,
+            description="Email de l'utilisateur",
+        ),
+        "password": openapi.Schema(
+            type=openapi.TYPE_STRING,
+            description="Mot de passe de l'utilisateur",
+        ),
+    }
+)
 
 class CustomTokenView(APIView):
     permission_classes = [AllowAny]
@@ -23,7 +38,8 @@ class CustomTokenView(APIView):
         if x_forwarded_for:
             return x_forwarded_for.split(',')[0].strip()
         return request.META.get('REMOTE_ADDR', 'Unknown')
-
+    
+    @swagger_auto_schema(request_body=login_schema, responses={200: None})
     def post(self, request, *args, **kwargs):
         # Validate input data
         serializer = CustomTokenObtainPairSerializer(data=request.data)
