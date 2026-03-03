@@ -10,7 +10,8 @@ from user.models.token_user_model import TokenUserModel
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.hashers import check_password
-
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 
 status_service = StatusService()
 mail_service = MailService()
@@ -141,7 +142,10 @@ class CustomUserViewSet(ModelViewSet):
             return status_service.status204(data={})
         except Exception as e:
             return status_service.status500(data=str(e))
-
+    @swagger_auto_schema(
+        request_body=openapi.Schema(type=openapi.TYPE_OBJECT, properties={'token': openapi.Schema(type=openapi.TYPE_STRING)}) ,
+        responses={200: openapi.Response("Activation du compte")},
+    )
     def activate_account(self, request, *args, **kwargs):
         token = request.data.get('token')
         if not token:
