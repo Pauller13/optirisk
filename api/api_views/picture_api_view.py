@@ -4,7 +4,8 @@ from api.serializers import PictureUserSerializer
 from user.models.custom_user_model import CustomUserModel
 from cloudinary import uploader, api
 from cloudinary.exceptions import NotFound
-
+from drf_yasg import openapi
+from drf_yasg.utils import swagger_auto_schema
 status_service = StatusService()
 class PictureAPIView(APIView):
     
@@ -12,6 +13,7 @@ class PictureAPIView(APIView):
         serializer = PictureUserSerializer(request.user)
         return status_service.status200(data=serializer.data)
     
+    @swagger_auto_schema(request_body=openapi.Schema(type=openapi.TYPE_OBJECT, properties={'picture': openapi.Schema(type=openapi.TYPE_STRING)}), responses=None)
     def post(self, request):
         user = CustomUserModel.objects.get(email=request.user.email)
         if user.picture:
@@ -22,11 +24,3 @@ class PictureAPIView(APIView):
             return status_service.status200(data=serializer.data)
         return status_service.status400(data=serializer.errors)
     
-
-def check_image_exists(image_name):
-    print(api.resource(image_name))
-    try:
-        api.resource(image_name) # Permet de récupérer les infos de l'image
-        return True
-    except NotFound:
-        return False
