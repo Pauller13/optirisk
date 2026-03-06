@@ -19,7 +19,7 @@ class AnalysisListSerializer(serializers.ModelSerializer):
             'progress_percentage',
             'slug',
             'created_at',
-            'updated_at'
+            'updated_at',
             'slug'
         ]
         read_only_fields = ['created_at', 'updated_at', 'slug']
