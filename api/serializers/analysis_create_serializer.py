@@ -10,7 +10,7 @@ class AnalysisCreateSerializer(ModelSerializer):
             'workshop3_data',
             'workshop4_data',
             'workshop5_data',
-            'slug',
+            'id'
         ]
 
     def create(self, validated_data):
