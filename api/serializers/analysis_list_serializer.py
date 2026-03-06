@@ -12,7 +12,6 @@ class AnalysisListSerializer(serializers.ModelSerializer):
     class Meta:
         model = AnalysisModel
         fields = [
-            'id',
             'title',
             'organization',
             'status_analysis',
@@ -21,8 +20,9 @@ class AnalysisListSerializer(serializers.ModelSerializer):
             'slug',
             'created_at',
             'updated_at'
+            'slug'
         ]
-        read_only_fields = ['created_at', 'updated_at']
+        read_only_fields = ['created_at', 'updated_at', 'slug']
 
     def get_progress_percentage(self, obj):
         completed = sum([
