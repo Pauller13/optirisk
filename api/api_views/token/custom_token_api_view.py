@@ -95,7 +95,7 @@ class CustomTokenView(APIView):
             )
             return status_service.status401(
                 data={}, 
-                message="Compte suspendu, veuillez utiliser le lien d'activation envoyé par email."
+                message="Compte suspendu, veuillez contacter l'administrateur."
             )
         # Successful authentication
         logger.info(
