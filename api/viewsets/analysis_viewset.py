@@ -1,6 +1,5 @@
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.decorators import action
-from rest_framework.response import Response
 from analysis.models import AnalysisModel
 from api.serializers import (
     AnalysisListSerializer,
@@ -25,6 +24,55 @@ class AnalysisViewSet(ModelViewSet):
             return AnalysisCreateSerializer
         return AnalysisDetailSerializer
 
+    def partial_update(self, request, *args, **kwargs):
+        return status_service.status405(data={})
+    
+    def list(self, request, *args, **kwargs):
+        try:
+            queryset = self.get_queryset().filter(user=request.user, status=True)
+            serializer = AnalysisListSerializer(queryset, many=True)
+            return status_service.status200(data=serializer.data)
+        except Exception as e:
+            return status_service.status500(data=str(e))
+    
+    def create(self, request, *args, **kwargs):
+        try:
+            serializer = self.get_serializer(data=request.data)
+            if not serializer.is_valid():
+                return status_service.status400(data=serializer.errors)
+            serializer.save(user=request.user)
+            return status_service.status201(data=serializer.data)
+        except Exception as e:
+            return status_service.status500(data=str(e))
+        
+    def retrieve(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance)
+            return status_service.status200(data=serializer.data)
+        except Exception as e:
+            return status_service.status500(data=str(e))
+    
+    def update(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            serializer = self.get_serializer(instance, data=request.data)
+            if not serializer.is_valid():
+                return status_service.status400(data=serializer.errors)
+            serializer.save()
+            return status_service.status200(data=serializer.data)
+        except Exception as e:
+            return status_service.status500(data=str(e))
+    
+    def destroy(self, request, *args, **kwargs):
+        try:
+            instance = self.get_object()
+            instance.status = False
+            instance.save()
+            return status_service.status204(data={})
+        except Exception as e:
+            return status_service.status500(data=str(e))
+    
     def getMyAnalysis(self, request, *args, **kwargs):
         try:
             queryset = self.get_queryset().filter(user=request.user)

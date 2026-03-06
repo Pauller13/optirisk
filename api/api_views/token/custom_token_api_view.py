@@ -88,6 +88,15 @@ class CustomTokenView(APIView):
                 message="Compte désactivé, veuillez utiliser le lien d'activation envoyé par email."
             )
 
+        if not user.status:
+            logger.warning(
+                f"[FAILED LOGIN] Suspended account login attempt for '{email}' "
+                f"from IP {ip} at {now()}."
+            )
+            return status_service.status401(
+                data={}, 
+                message="Compte suspendu, veuillez utiliser le lien d'activation envoyé par email."
+            )
         # Successful authentication
         logger.info(
             f"[LOGIN] User '{user.last_name} {user.first_name}' (ID: {user.id}) "

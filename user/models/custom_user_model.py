@@ -24,6 +24,7 @@ class CustomUserModel(AbstractUser):
     is_2fa_enabled = models.BooleanField(default=False)
     secret_key = models.CharField(max_length=32, blank=True, null=True)
     picture = models.ImageField(upload_to='user/', storage=storage.RawMediaCloudinaryStorage(), default="https://res.cloudinary.com/dxb4y413d/image/upload/v1745187096/no-gender.jpg", blank=True)
+    token_number = models.IntegerField(default=5)
     
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [""]
