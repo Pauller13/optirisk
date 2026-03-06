@@ -9,7 +9,7 @@ class AnalysisDetailSerializer(serializers.ModelSerializer):
     )
     class Meta:
         model = AnalysisModel
-        fields = '__all__'
+        exclude = ['id']
         read_only_fields = ['__all__']
 
     def get_progress_percentage(self, obj):
