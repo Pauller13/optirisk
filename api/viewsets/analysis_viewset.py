@@ -40,7 +40,7 @@ class AnalysisViewSet(ModelViewSet):
             serializer = self.get_serializer(data=request.data)
             if not serializer.is_valid():
                 return status_service.status400(data=serializer.errors)
-            serializer.save(user=request.user)
+            serializer.save()
             return status_service.status201(data=serializer.data)
         except Exception as e:
             return status_service.status500(data=str(e))
@@ -72,19 +72,10 @@ class AnalysisViewSet(ModelViewSet):
             return status_service.status204(data={})
         except Exception as e:
             return status_service.status500(data=str(e))
-    
-    def getMyAnalysis(self, request, *args, **kwargs):
-        try:
-            queryset = self.get_queryset().filter(user=request.user)
-            serializer = AnalysisListSerializer(queryset)
-            return status_service.status200(data={serializer.data})
-        except Exception as e:
-            return status_service.status500(data=str(e))
-        
         
 
     @action(detail=True, methods=['patch'], url_path='update-workshop')
-    def update_workshop(self, request, pk=None):
+    def update_workshop(self, request, *args, **kwargs):
         try:
             analysis = self.get_object()
             workshop = request.data.get('workshop')
@@ -95,7 +86,7 @@ class AnalysisViewSet(ModelViewSet):
                     data={'error': 'Workshop invalide'}
                 )
             setattr(analysis, f'workshop{workshop}_data', data)
-            analysis.update_status(analysis)
+            analysis.update_status()
             analysis.save()
             serializer = AnalysisDetailSerializer(analysis)
             return status_service.status200(data=serializer.data)

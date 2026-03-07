@@ -10,8 +10,9 @@ class AnalysisCreateSerializer(ModelSerializer):
             'workshop3_data',
             'workshop4_data',
             'workshop5_data',
+            'status',
         ]
-        read_only_fields = ['slug']
+        read_only_fields = ['slug', 'user']
 
     def create(self, validated_data):
         validated_data['user'] = self.context['request'].user

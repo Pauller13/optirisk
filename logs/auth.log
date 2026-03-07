@@ -34,3 +34,7 @@
 [2026-01-24 21:04:36,392] INFO auth_logger: [LOGIN] User 'last_name first_name' (ID: 35) logged in from IP 127.0.0.1 at 2026-01-24 21:04:36.392508+00:00.
 [2026-03-03 23:51:20,403] WARNING auth_logger: [FAILED LOGIN] Inactive account login attempt for 'string' from IP 127.0.0.1 at 2026-03-03 23:51:20.402198+00:00.
 [2026-03-03 23:55:11,440] INFO auth_logger: [LOGIN] User 'string string' (ID: 2) logged in from IP 127.0.0.1 at 2026-03-03 23:55:11.440837+00:00.
+[2026-03-06 23:46:13,988] WARNING auth_logger: [FAILED LOGIN] Login attempt for non-existent email 'cc@yopmail.com' from IP 127.0.0.1 at 2026-03-06 23:46:13.988680+00:00.
+[2026-03-06 23:46:39,737] WARNING auth_logger: [FAILED LOGIN] Suspended account login attempt for 'string' from IP 127.0.0.1 at 2026-03-06 23:46:39.737283+00:00.
+[2026-03-06 23:47:24,652] INFO auth_logger: [LOGIN] User 'string string' (ID: 2) logged in from IP 127.0.0.1 at 2026-03-06 23:47:24.652111+00:00.
+[2026-03-06 23:55:57,135] INFO auth_logger: [LOGIN] User 'string string' (ID: 2) logged in from IP 127.0.0.1 at 2026-03-06 23:55:57.135425+00:00.
