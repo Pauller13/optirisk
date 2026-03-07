@@ -7,6 +7,7 @@ import pyotp
 from django.contrib.auth.models import AbstractUser
 from django.db import models
 from base.services import MailService
+from user.enums.role_enum import RoleEnum
 from user.models.token_user_model import TokenUserModel
 from dotenv import load_dotenv
 from cloudinary_storage import storage
@@ -26,7 +27,7 @@ class CustomUserModel(AbstractUser):
     picture = models.ImageField(upload_to='user/', storage=storage.RawMediaCloudinaryStorage(), default="https://res.cloudinary.com/dxb4y413d/image/upload/v1745187096/no-gender.jpg", blank=True)
     token_number = models.IntegerField(default=5)
     status = models.BooleanField(default=True)
-    
+    role = models.CharField(max_length=100, choices=RoleEnum.choices, default=RoleEnum.USER)
     USERNAME_FIELD = "email"
     REQUIRED_FIELDS = [""]
     def save(self, *args, **kwargs):

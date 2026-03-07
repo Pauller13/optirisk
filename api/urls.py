@@ -44,4 +44,8 @@ urlpatterns = [
     path('ai/scenarios/', ia_api.generate_scenarios_view, name='ai_generate_scenarios'),
     path('ai/assets/', ia_api.suggest_assets_view, name='ai_suggest_assets'),
     path('ai/measures/', ia_api.generate_measures_view, name='ai_generate_measures'),
+    
+    #ADMIN
+    path('user/<str:slug>/suspend', CustomUserViewSet.as_view({'put': 'suspend_user'}), name='suspend-user'),
+    path('user/<str:slug>/active', CustomUserViewSet.as_view({'put': 'active_user'}), name='active-user'),
 ]

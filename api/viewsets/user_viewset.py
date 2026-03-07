@@ -11,7 +11,7 @@ from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAuthenticated
 from django.contrib.auth.hashers import check_password
 from drf_yasg import openapi
-from drf_yasg.utils import swagger_auto_schema
+from drf_yasg.utils import swagger_auto_schema, no_body
 
 status_service = StatusService()
 mail_service = MailService()
@@ -173,3 +173,22 @@ class CustomUserViewSet(ModelViewSet):
             return status_service.status500(data=str(e))
 
 
+    @swagger_auto_schema(responses={200: openapi.Response("Utilisateur suspendu")}, request_body= no_body)
+    def suspend_user(self, request, *args, **kwargs):
+        try:
+            instance = CustomUserModel.objects.filter(id=request.user.id).first()
+            instance.status = False
+            instance.save()
+            return status_service.status200(data={}, message="Utilisateur suspendu")
+        except Exception as e:
+            return status_service.status500(data=str(e))
+        
+    @swagger_auto_schema(responses={200: openapi.Response("Utilisateur activé")}, request_body= no_body)
+    def active_user(self, request, *args, **kwargs):
+        try:
+            instance = CustomUserModel.objects.filter(id=request.user.id).first()
+            instance.status = True
+            instance.save()
+            return status_service.status200(data={}, message="Utilisateur activé")
+        except Exception as e:
+            return status_service.status500(data=str(e))

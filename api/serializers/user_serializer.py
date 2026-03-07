@@ -6,6 +6,6 @@ class UserSerializer(ModelSerializer):
 
     class Meta:
         model = CustomUserModel
-        fields = ['email', 'first_name', 'last_name', 'company_name', 'is_2fa_enabled', 'token_number']
-        read_only_fields = ['email', 'first_name', 'last_name', 'company_name', 'is_2fa_enabled', 'token_number']
+        fields = ['email', 'first_name', 'last_name', 'company_name', 'is_2fa_enabled', 'token_number', 'role']
+        read_only_fields = ['email', 'first_name', 'last_name', 'company_name', 'is_2fa_enabled', 'token_number', 'role']
 
