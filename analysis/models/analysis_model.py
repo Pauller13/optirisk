@@ -1,4 +1,5 @@
 import uuid
+from cloudinary_storage import storage
 from django.db import models
 from base.helpers.date_time_model import DateTimeModel
 from analysis.enums import StatusEnum
@@ -17,7 +18,9 @@ class AnalysisModel(DateTimeModel):
     workshop3_data = models.JSONField(default=dict, blank=True, null=True)
     workshop4_data = models.JSONField(default=dict, blank=True, null=True)
     workshop5_data = models.JSONField(default=dict, blank=True, null=True)
-    
+    technical_report = models.ImageField(upload_to='reports/', storage=storage.RawMediaCloudinaryStorage(), blank=True)
+    executive_report = models.ImageField(upload_to='reports/', storage=storage.RawMediaCloudinaryStorage(), blank=True)
+
     def save(self, *args, **kwargs):
         is_new = not self.pk
         if is_new:

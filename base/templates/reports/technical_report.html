@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rapport Technique - {{ analysis.title }}</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            color: #333;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        .page {
+            max-width: 1200px;
+            margin: 20px auto;
+            background: white;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .header {
+            border-bottom: 3px solid #2c3e50;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #2c3e50;
+            font-size: 28px;
+            margin-bottom: 10px;
+        }
+        .header p {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+        .meta-info {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 30px;
+            background: #ecf0f1;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .meta-item {
+            padding: 10px;
+            background: white;
+            border-radius: 3px;
+        }
+        .meta-item label {
+            font-weight: bold;
+            color: #2c3e50;
+            display: block;
+            font-size: 12px;
+            margin-bottom: 5px;
+        }
+        .meta-item span {
+            color: #34495e;
+            font-size: 14px;
+        }
+        .section {
+            margin-bottom: 40px;
+        }
+        .section-title {
+            background: #34495e;
+            color: white;
+            padding: 15px 20px;
+            border-radius: 5px 5px 0 0;
+            font-size: 18px;
+            font-weight: bold;
+            border-left: 5px solid #3498db;
+        }
+        .section-content {
+            background: #f8f9fa;
+            padding: 20px;
+            border: 1px solid #e0e0e0;
+            border-radius: 0 0 5px 5px;
+        }
+        .subsection {
+            margin-bottom: 25px;
+        }
+        .subsection-title {
+            background: #3498db;
+            color: white;
+            padding: 10px 15px;
+            border-radius: 3px;
+            margin-bottom: 15px;
+            font-size: 16px;
+            font-weight: bold;
+            display: inline-block;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+            background: white;
+        }
+        th {
+            background: #2c3e50;
+            color: white;
+            padding: 12px;
+            text-align: left;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        td {
+            padding: 10px 12px;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        tr:hover {
+            background: #ecf0f1;
+        }
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 3px;
+            font-size: 12px;
+            font-weight: bold;
+            margin-right: 5px;
+        }
+        .badge-critical {
+            background: #e74c3c;
+            color: white;
+        }
+        .badge-high {
+            background: #e67e22;
+            color: white;
+        }
+        .badge-medium {
+            background: #f39c12;
+            color: white;
+        }
+        .badge-low {
+            background: #27ae60;
+            color: white;
+        }
+        .badge-draft {
+            background: #95a5a6;
+            color: white;
+        }
+        .badge-info {
+            background: #3498db;
+            color: white;
+        }
+        .list-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            background: white;
+            border-left: 3px solid #3498db;
+            border-radius: 2px;
+        }
+        .list-item strong {
+            color: #2c3e50;
+        }
+        .alert {
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+        }
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .card {
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 5px;
+            padding: 15px;
+        }
+        .card-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+            font-size: 14px;
+        }
+        .card-content {
+            color: #555;
+            font-size: 13px;
+            line-height: 1.5;
+        }
+        .swot-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            margin-bottom: 20px;
+        }
+        .swot-box {
+            padding: 15px;
+            border-radius: 5px;
+            color: white;
+        }
+        .swot-forces {
+            background: #27ae60;
+        }
+        .swot-weaknesses {
+            background: #e74c3c;
+        }
+        .swot-opportunities {
+            background: #3498db;
+        }
+        .swot-threats {
+            background: #f39c12;
+        }
+        .swot-box h4 {
+            margin-bottom: 10px;
+            font-size: 16px;
+        }
+        .swot-box ul {
+            list-style: none;
+            padding-left: 0;
+        }
+        .swot-box li {
+            margin-bottom: 5px;
+            padding-left: 20px;
+            position: relative;
+        }
+        .swot-box li:before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+        }
+        .page-break {
+            page-break-after: always;
+            margin: 40px 0;
+            border-top: 2px dashed #bdc3c7;
+            padding-top: 40px;
+        }
+    </style>
+</head>
+<body>
+    <div class="page">
+        <!-- HEADER -->
+        <div class="header">
+            <h1>📋 Rapport Technique Complet</h1>
+            <p>Analyse de risque cybersécurité - Document technique détaillé</p>
+        </div>
+
+        <!-- META INFOS -->
+        <div class="meta-info">
+            <div class="meta-item">
+                <label>📌 Titre de l'Analyse</label>
+                <span>{{ analysis.title }}</span>
+            </div>
+            <div class="meta-item">
+                <label>🏢 Organisation</label>
+                <span>{{ analysis.organization }}</span>
+            </div>
+            <div class="meta-item">
+                <label>📅 Date de Création</label>
+                <span>{{ analysis.created_at|date:"d/m/Y H:i" }}</span>
+            </div>
+            <div class="meta-item">
+                <label>🔄 Statut</label>
+                <span><span class="badge badge-info">{{ analysis.get_status_analysis_display }}</span></span>
+            </div>
+        </div>
+
+        <!-- SECTION 1: WORKSHOP 1 - CONFIGURATION & VALEURS MÉTIER -->
+        <div class="section">
+            <div class="section-title">🎯 WORKSHOP 1 - Configuration et Valeurs Métier</div>
+            <div class="section-content">
+                <!-- Context -->
+                {% if workshop1.config.contexte %}
+                <div class="subsection">
+                    <div class="subsection-title">📍 Contexte</div>
+                    <div class="alert alert-info">
+                        {{ workshop1.config.contexte }}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Analysis Type -->
+                {% if workshop1.config.typeAnalyse %}
+                <div class="subsection">
+                    <div class="subsection-title">🔍 Type d'Analyse</div>
+                    <p>{{ workshop1.config.typeAnalyse }}</p>
+                </div>
+                {% endif %}
+
+                <!-- Missions -->
+                {% if workshop1.config.missions %}
+                <div class="subsection">
+                    <div class="subsection-title">✅ Missions Critiques</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Description</th>
+                                <th>Responsable</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for mission in workshop1.config.missions %}
+                            <tr>
+                                <td>{{ mission.description }}</td>
+                                <td>{{ mission.responsable }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+
+                <!-- Business Values -->
+                {% if workshop1.config.valeursMetier %}
+                <div class="subsection">
+                    <div class="subsection-title">💎 Valeurs Métier</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Type</th>
+                                <th>Criticité</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for valeur in workshop1.config.valeursMetier %}
+                            <tr>
+                                <td><strong>{{ valeur.nom }}</strong></td>
+                                <td>{{ valeur.type }}</td>
+                                <td>
+                                    {% if valeur.criticite == "Critique" %}
+                                        <span class="badge badge-critical">{{ valeur.criticite }}</span>
+                                    {% elif valeur.criticite == "Élevée" %}
+                                        <span class="badge badge-high">{{ valeur.criticite }}</span>
+                                    {% elif valeur.criticite == "Moyenne" %}
+                                        <span class="badge badge-medium">{{ valeur.criticite }}</span>
+                                    {% else %}
+                                        <span class="badge badge-low">{{ valeur.criticite }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ valeur.description }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+
+                <!-- SWOT Analysis -->
+                {% if workshop1.config.analyseSWOT %}
+                <div class="subsection">
+                    <div class="subsection-title">🎲 Analyse SWOT</div>
+                    <div class="swot-grid">
+                        {% if workshop1.config.analyseSWOT.forces %}
+                        <div class="swot-box swot-forces">
+                            <h4>💪 Forces</h4>
+                            <ul>
+                                {% for force in workshop1.config.analyseSWOT.forces %}
+                                <li>{{ force }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        
+                        {% if workshop1.config.analyseSWOT.faiblesses %}
+                        <div class="swot-box swot-weaknesses">
+                            <h4>⚠️ Faiblesses</h4>
+                            <ul>
+                                {% for faiblesse in workshop1.config.analyseSWOT.faiblesses %}
+                                <li>{{ faiblesse }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        
+                        {% if workshop1.config.analyseSWOT.opportunites %}
+                        <div class="swot-box swot-opportunities">
+                            <h4>🚀 Opportunités</h4>
+                            <ul>
+                                {% for opportunite in workshop1.config.analyseSWOT.opportunites %}
+                                <li>{{ opportunite }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                        
+                        {% if workshop1.config.analyseSWOT.menaces %}
+                        <div class="swot-box swot-threats">
+                            <h4>🔥 Menaces</h4>
+                            <ul>
+                                {% for menace in workshop1.config.analyseSWOT.menaces %}
+                                <li>{{ menace }}</li>
+                                {% endfor %}
+                            </ul>
+                        </div>
+                        {% endif %}
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Standards and Security -->
+                <div class="grid-2">
+                    {% if workshop1.config.standard %}
+                    <div class="card">
+                        <div class="card-title">📜 Standard de Référence</div>
+                        <div class="card-content">{{ workshop1.config.standard }}</div>
+                    </div>
+                    {% endif %}
+                    
+                    {% if workshop1.config.socleSecurite %}
+                    <div class="card">
+                        <div class="card-title">🏛️ Socle de Sécurité</div>
+                        <div class="card-content">{{ workshop1.config.socleSecurite }}</div>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- PAGE BREAK -->
+        <div class="page-break"></div>
+
+        <!-- SECTION 2: WORKSHOP 2 - SOURCES DE RISQUE -->
+        <div class="section">
+            <div class="section-title">⚡ WORKSHOP 2 - Sources de Risque et Objectifs Visés</div>
+            <div class="section-content">
+                <!-- Risk Sources -->
+                {% if workshop2.sourcesRisque %}
+                <div class="subsection">
+                    <div class="subsection-title">🎯 Sources de Risque</div>
+                    {% for source in workshop2.sourcesRisque %}
+                    <div class="list-item">
+                        <strong>{{ source.nom }}</strong>
+                        <span class="badge badge-info">{{ source.type }}</span>
+                        <p style="margin-top: 8px; color: #666;">
+                            <strong>Motivation:</strong> {{ source.motivation }}<br>
+                            <strong>Capacités:</strong> {% for cap in source.capacites %}{{ cap }}{% if not forloop.last %}, {% endif %}{% endfor %}
+                        </p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+
+                <!-- Targeted Objectives -->
+                {% if workshop2.objectifsVises %}
+                <div class="subsection">
+                    <div class="subsection-title">🎪 Objectifs Visés</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Objectif</th>
+                                <th>Catégorie</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for obj in workshop2.objectifsVises %}
+                            <tr>
+                                <td>{{ obj.nom }}</td>
+                                <td><span class="badge badge-info">{{ obj.categorie }}</span></td>
+                                <td>{{ obj.description }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- SECTION 3: WORKSHOP 3 - SCENARIOS STRATEGIQUES -->
+        <div class="section">
+            <div class="section-title">🔗 WORKSHOP 3 - Scénarios Stratégiques</div>
+            <div class="section-content">
+                {% if workshop3.cartographie.scenariosStrategiques %}
+                {% for scenario in workshop3.cartographie.scenariosStrategiques %}
+                <div class="subsection">
+                    <div class="subsection-title">📌 {{ scenario.title }}</div>
+                    <table>
+                        <tr>
+                            <td><strong>Valeur Métier Ciblée:</strong></td>
+                            <td>{{ scenario.targetBusinessValue }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Source de Risque:</strong></td>
+                            <td>{{ scenario.riskSource }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Chemin d'Attaque:</strong></td>
+                            <td>{{ scenario.attackPath }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Événement Redouté:</strong></td>
+                            <td>{{ scenario.fearedEvent }}</td>
+                        </tr>
+                        <tr>
+                            <td><strong>Gravité:</strong></td>
+                            <td><span class="badge badge-critical">{{ scenario.gravity }}</span></td>
+                        </tr>
+                    </table>
+                </div>
+                {% endfor %}
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- PAGE BREAK -->
+        <div class="page-break"></div>
+
+        <!-- SECTION 4: WORKSHOP 4 - ASSETS SUPPORT -->
+        <div class="section">
+            <div class="section-title">🔧 WORKSHOP 4 - Assets Support</div>
+            <div class="section-content">
+                {% if workshop4.supportingAssets %}
+                <div class="subsection">
+                    <div class="subsection-title">💾 Éléments de l'Écosystème</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>Type</th>
+                                <th>Criticité</th>
+                                <th>Description</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for asset in workshop4.supportingAssets %}
+                            <tr>
+                                <td>{{ asset.name }}</td>
+                                <td>{{ asset.type }}</td>
+                                <td>
+                                    {% if asset.criticality == "Critique" %}
+                                        <span class="badge badge-critical">{{ asset.criticality }}</span>
+                                    {% elif asset.criticality == "Élevée" %}
+                                        <span class="badge badge-high">{{ asset.criticality }}</span>
+                                    {% elif asset.criticality == "Moyenne" %}
+                                        <span class="badge badge-medium">{{ asset.criticality }}</span>
+                                    {% else %}
+                                        <span class="badge badge-low">{{ asset.criticality }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ asset.description }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- SECTION 5: WORKSHOP 5 - MESURES DE SECURITE -->
+        <div class="section">
+            <div class="section-title">🛡️ WORKSHOP 5 - Mesures de Sécurité</div>
+            <div class="section-content">
+                {% if workshop5.securityMeasures %}
+                <div class="subsection">
+                    <div class="subsection-title">📋 Mesures Recommandées</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Titre</th>
+                                <th>Catégorie</th>
+                                <th>Priorité</th>
+                                <th>Coût</th>
+                                <th>Responsable</th>
+                                <th>Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for measure in workshop5.securityMeasures %}
+                            <tr>
+                                <td>{{ measure.title }}</td>
+                                <td><span class="badge badge-info">{{ measure.category }}</span></td>
+                                <td>
+                                    {% if measure.priority == "Élevée" or measure.priority == "Critique" %}
+                                        <span class="badge badge-critical">{{ measure.priority }}</span>
+                                    {% elif measure.priority == "Moyenne" %}
+                                        <span class="badge badge-medium">{{ measure.priority }}</span>
+                                    {% else %}
+                                        <span class="badge badge-low">{{ measure.priority }}</span>
+                                    {% endif %}
+                                </td>
+                                <td>{{ measure.cost }}</td>
+                                <td>{{ measure.responsible }}</td>
+                                <td><span class="badge badge-draft">{{ measure.status }}</span></td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+                {% endif %}
+
+                {% if workshop5.residualRisks %}
+                <div class="subsection">
+                    <div class="subsection-title">⚠️ Risques Résiduels</div>
+                    {% for risk in workshop5.residualRisks %}
+                    <div class="list-item">
+                        <strong>{{ risk.title }}</strong>
+                        <p style="margin-top: 8px; color: #666;">{{ risk.description }}</p>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- FOOTER -->
+        <div style="margin-top: 50px; padding-top: 20px; border-top: 1px solid #e0e0e0; text-align: center; color: #999; font-size: 12px;">
+            <p>Document généré automatiquement - Rapport Technique Confidentiel</p>
+            <p>Date: {{ now|date:"d/m/Y H:i" }}</p>
+        </div>
+    </div>
+</body>
+</html>
