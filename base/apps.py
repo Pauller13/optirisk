@@ -6,5 +6,4 @@ class BaseConfig(AppConfig):
     name = 'base'
 
     def ready(self):
-        import base.managements.signals.auth_logging
         import base.managements.signals.create_default_user

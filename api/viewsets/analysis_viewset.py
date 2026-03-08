@@ -8,6 +8,7 @@ from api.serializers import (
 )
 from base.services.status_service import StatusService
 from user.enums.role_enum import RoleEnum
+from user.models.admin_log_model import AdminLogModel
 
 status_service = StatusService()
 
@@ -44,6 +45,7 @@ class AnalysisViewSet(ModelViewSet):
             serializer = self.get_serializer(data=request.data)
             if not serializer.is_valid():
                 return status_service.status400(data=serializer.errors)
+            AdminLogModel.objects.create(level="INFO", action="ANALYSIS", message=f"Utilisateur {request.user.last_name} {request.user.first_name} a créé une nouvelle analyse.")
             serializer.save()
             return status_service.status201(data=serializer.data)
         except Exception as e:
@@ -73,6 +75,7 @@ class AnalysisViewSet(ModelViewSet):
             instance = self.get_object()
             instance.status = False
             instance.save()
+            AdminLogModel.objects.create(level="INFO", action="ANALYSIS", message=f"Utilisateur {request.user.last_name} {request.user.first_name} a supprimé une analyse.")
             return status_service.status204(data={})
         except Exception as e:
             return status_service.status500(data=str(e))
@@ -92,7 +95,10 @@ class AnalysisViewSet(ModelViewSet):
             setattr(analysis, f'workshop{workshop}_data', data)
             analysis.update_status()
             analysis.save()
+            AdminLogModel.objects.create(level="INFO", action="ANALYSIS", message=f"Utilisateur {request.user.last_name} {request.user.first_name} a fais l'atelier {workshop}.")
             serializer = AnalysisDetailSerializer(analysis)
+            if workshop == 5:
+                AdminLogModel.objects.create(level="INFO", action="ANALYSIS", message=f"Utilisateur {request.user.last_name} {request.user.first_name} a terminé l'analyse.")
             return status_service.status200(data=serializer.data)
         except AnalysisModel.DoesNotExist:
             return status_service.status400(data={})

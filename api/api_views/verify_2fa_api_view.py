@@ -1,7 +1,7 @@
 import pyotp
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
-from rest_framework_simplejwt.tokens import AccessToken
+from user.models.admin_log_model import AdminLogModel
 from base.services.status_service import StatusService
 from user.models.custom_user_model import CustomUserModel
 from drf_yasg import openapi
@@ -50,10 +50,12 @@ class Verify2FAView(APIView):
             from rest_framework_simplejwt.tokens import RefreshToken
             refresh = RefreshToken.for_user(user)
             access = refresh.access_token
+            AdminLogModel.objects.create(level="INFO", action="LOGIN", message=f"Utilisateur {user.last_name} {user.first_name} connecté(2FA validé).")
             return response_status.status200(
                 data={
                     "refresh": str(refresh),
                     "access": str(access),
                 }
             )
+        AdminLogModel.objects.create(level="WARNING", action="LOGIN", message=f"Utilisateur {user.last_name} {user.first_name} connecté(2FA non validé).")
         return response_status.status400(data={}, message="Code incorrect.")

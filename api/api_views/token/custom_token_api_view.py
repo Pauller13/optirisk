@@ -1,4 +1,5 @@
 import logging
+from user.models.admin_log_model import AdminLogModel
 from base.services.status_service import StatusService
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
@@ -55,9 +56,10 @@ class CustomTokenView(APIView):
             user = User.objects.get(email=email)
         except User.DoesNotExist:
             # Use constant-time response to prevent user enumeration
-            logger.warning(
-                f"[FAILED LOGIN] Login attempt for non-existent email '{email}' "
-                f"from IP {ip} at {now()}."
+            AdminLogModel.objects.create(
+                level="WARNING",
+                action="LOGIN",
+                message=f"Echec de l'authentification pour l'email '{email}'.",
             )
             return status_service.status401(
                 data={}, 
@@ -66,9 +68,10 @@ class CustomTokenView(APIView):
 
         # Check password
         if not user.check_password(password):
-            logger.warning(
-                f"[FAILED LOGIN] Invalid password for email '{email}' "
-                f"from IP {ip} at {now()}."
+            AdminLogModel.objects.create(
+                level="WARNING",
+                action="LOGIN",
+                message=f"Echec de l'authentification pour mauvais password pour l'email '{email}'.",
             )
             return status_service.status401(
                 data={}, 
@@ -77,9 +80,10 @@ class CustomTokenView(APIView):
 
         # Check if account is active
         if not user.is_active:
-            logger.warning(
-                f"[FAILED LOGIN] Inactive account login attempt for '{email}' "
-                f"from IP {ip} at {now()}."
+            AdminLogModel.objects.create(
+                level="WARNING",
+                action="LOGIN",
+                message=f"Echec de l'authentification pour compte inactif '{email}'.",
             )
             return status_service.status401(
                 data={}, 
@@ -87,23 +91,23 @@ class CustomTokenView(APIView):
             )
 
         if not user.status:
-            logger.warning(
-                f"[FAILED LOGIN] Suspended account login attempt for '{email}' "
-                f"from IP {ip} at {now()}."
+            AdminLogModel.objects.create(
+                level="WARNING",
+                action="LOGIN",
+                message=f"Echec de l'authentification pour compte suspendu '{email}' from IP {ip} at {now()}.",
             )
             return status_service.status401(
                 data={}, 
                 message="Compte suspendu, veuillez contacter l'administrateur."
             )
-        # Successful authentication
-        logger.info(
-            f"[LOGIN] User '{user.last_name} {user.first_name}' (ID: {user.id}) "
-            f"logged in from IP {ip} at {now()}."
-        )
 
         # Handle 2FA flow
         if user.is_2fa_enabled:
-            
+            AdminLogModel.objects.create(
+                level="INFO",
+                action="LOGIN",
+                message=f"Connexion reussie pour l'utilisateur '{user.last_name} {user.first_name}'. Autenthication 2FA requise",
+            )
             return status_service.status200(
                 data={
                     "two_fa_active": True,
@@ -111,7 +115,11 @@ class CustomTokenView(APIView):
                 }, 
                 message="2FA requis"
             )
-
+        AdminLogModel.objects.create(
+            level="INFO",
+            action="LOGIN",
+            message=f"Connexion reussie pour l'utilisateur '{user.last_name} {user.first_name}' .",
+        )
         # Normal login flow (no 2FA)
         refresh = RefreshToken.for_user(user)
         access = refresh.access_token

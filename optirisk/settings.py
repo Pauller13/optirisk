@@ -176,55 +176,5 @@ CLOUDINARY_STORAGE = {
     'API_SECRET': os.getenv("CLOUDINARY_API_SECRET")
 }
 
-LOGGING = {
-    'version': 1,
-    'disable_existing_loggers': False,
-
-    'formatters': {
-        'standard': {
-            'format': '[{asctime}] {levelname} {name}: {message}',
-            'style': '{',
-        },
-    },
-
-    'handlers': {
-        # 'file_logger1': {
-        #     'level': 'DEBUG',
-        #     'class': 'logging.FileHandler',
-        #     'filename': os.path.join(BASE_DIR, 'auth.log'),
-        #     'formatter': 'standard',
-        # },
-        # 'file_logger2': {
-        #     'level': 'DEBUG',
-        #     'class': 'logging.FileHandler',
-        #     'filename': LOG_DIR / 'other.log',
-        #     'formatter': 'standard',
-        # },
-        'auth_handler': {
-        'level': 'INFO',
-        'class': 'logging.handlers.RotatingFileHandler',
-        'filename': str(LOG_DIR / 'auth.log'),
-        'formatter': 'standard',
-        },
-    },
-
-    'loggers': {
-        # 'logger1': {
-        #     'handlers': ['file_logger1'],
-        #     'level': 'DEBUG',
-        #     'propagate': False,
-        # },
-        # 'logger2': {
-        #     'handlers': ['file_logger2'],
-        #     'level': 'DEBUG',
-        #     'propagate': False,
-        # },
-        'auth_logger': {
-        'handlers': ['auth_handler'],
-        'level': 'INFO',
-        'propagate': False,
-        },
-    }
-}
 
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')

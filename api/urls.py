@@ -8,6 +8,7 @@ from api.api_views import (
     Disable2FAView,
     CustomTokenView,
     ia_api,
+    AdminLogAPIView,
 )
 from api.api_views.dashboard_api_view import DashboardAPIView
 from api.api_views.picture_api_view import PictureAPIView
@@ -48,4 +49,5 @@ urlpatterns = [
     #ADMIN
     path('user/<str:slug>/suspend', CustomUserViewSet.as_view({'put': 'suspend_user'}), name='suspend-user'),
     path('user/<str:slug>/active', CustomUserViewSet.as_view({'put': 'active_user'}), name='active-user'),
+    path('admin/logs', AdminLogAPIView.as_view(), name='admin-logs'),
 ]
