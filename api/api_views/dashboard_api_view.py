@@ -134,7 +134,7 @@ class DashboardAPIView(APIView):
                 user_data['analyses_number'] = user_analyses.count()
             return status_service.status200(data={
                 "platform_overview": platform_overview,
-                'users': user_data,
+                'users': users_data,
                 "analyses_stats": analyses_stats,
                 "analyses_by_type": analyses_by_type,
             })
