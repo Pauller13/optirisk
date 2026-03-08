@@ -7,6 +7,7 @@ from api.serializers import (
     AnalysisCreateSerializer,
 )
 from base.services.status_service import StatusService
+from user.enums.role_enum import RoleEnum
 
 status_service = StatusService()
 
@@ -29,7 +30,10 @@ class AnalysisViewSet(ModelViewSet):
     
     def list(self, request, *args, **kwargs):
         try:
-            queryset = self.get_queryset().filter(user=request.user, status=True)
+            if request.user.role == RoleEnum.ADMIN:
+                queryset = self.get_queryset().filter()
+            else:
+                queryset = self.get_queryset().filter(user=request.user, status=True)
             serializer = AnalysisListSerializer(queryset, many=True)
             return status_service.status200(data=serializer.data)
         except Exception as e:
@@ -92,5 +96,24 @@ class AnalysisViewSet(ModelViewSet):
             return status_service.status200(data=serializer.data)
         except AnalysisModel.DoesNotExist:
             return status_service.status400(data={})
+        except Exception as e:
+            return status_service.status500(data=str(e))
+    
+    @action(detail=False, methods=['patch'], url_path='reports')
+    def reports(self, request, *args, **kwargs):
+        try:
+            if request.user.role == RoleEnum.ADMIN:
+                queryset = self.get_queryset().filter(status=True)
+            else:
+                queryset = self.get_queryset().filter(user=request.user, status=True)
+            
+            return status_service.status200(data={
+                'reports': {
+                    'technical': queryset.technical_report,
+                    'executive': queryset.executive_report
+                },
+                'title': queryset.title
+                
+            })
         except Exception as e:
             return status_service.status500(data=str(e))

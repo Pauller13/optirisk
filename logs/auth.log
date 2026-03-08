@@ -39,3 +39,8 @@
 [2026-03-06 23:47:24,652] INFO auth_logger: [LOGIN] User 'string string' (ID: 2) logged in from IP 127.0.0.1 at 2026-03-06 23:47:24.652111+00:00.
 [2026-03-06 23:55:57,135] INFO auth_logger: [LOGIN] User 'string string' (ID: 2) logged in from IP 127.0.0.1 at 2026-03-06 23:55:57.135425+00:00.
 [2026-03-07 22:49:39,588] INFO auth_logger: [LOGIN] User 'string string' (ID: 2) logged in from IP 127.0.0.1 at 2026-03-07 22:49:39.588165+00:00.
+[2026-03-08 00:34:00,661] WARNING auth_logger: [FAILED LOGIN] Login attempt for non-existent email ''admin@example.com' from IP 127.0.0.1 at 2026-03-08 00:34:00.661786+00:00.
+[2026-03-08 00:34:34,784] WARNING auth_logger: [FAILED LOGIN] Login attempt for non-existent email ''admin@example.com' from IP 127.0.0.1 at 2026-03-08 00:34:34.784108+00:00.
+[2026-03-08 00:35:01,602] INFO auth_logger: [LOGIN] User ' ' (ID: 1) logged in from IP 127.0.0.1 at 2026-03-08 00:35:01.602840+00:00.
+[2026-03-08 00:51:45,323] INFO auth_logger: [LOGIN] User ' ' (ID: 1) logged in from IP 127.0.0.1 at 2026-03-08 00:51:45.322966+00:00.
+[2026-03-08 00:52:56,590] INFO auth_logger: [LOGIN] User ' ' (ID: 1) logged in from IP 127.0.0.1 at 2026-03-08 00:52:56.590221+00:00.

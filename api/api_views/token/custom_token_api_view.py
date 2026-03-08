@@ -4,10 +4,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny
 from api.serializers.token.custom_token_serializer import CustomTokenObtainPairSerializer
 from django.contrib.auth import get_user_model
-from django.contrib.auth.signals import user_logged_in
 from django.utils.timezone import now
 from rest_framework_simplejwt.tokens import RefreshToken
-from rest_framework_simplejwt.settings import api_settings
 from drf_yasg import openapi
 from drf_yasg.utils import swagger_auto_schema
 
@@ -118,10 +116,8 @@ class CustomTokenView(APIView):
         refresh = RefreshToken.for_user(user)
         access = refresh.access_token
 
-        # Update last login
-        if api_settings.UPDATE_LAST_LOGIN:
-            user_logged_in.send(sender=user.__class__, request=request, user=user)
-
+        user.last_login = now()
+        user.save()
         return status_service.status200(
             data={
                 "two_fa_active": False,

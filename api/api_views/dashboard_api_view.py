@@ -1,5 +1,6 @@
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated
+from api.serializers.user_serializer import UserSerializer
 from base.services.status_service import StatusService
 from user.models.custom_user_model import CustomUserModel
 from user.enums.role_enum import RoleEnum
@@ -7,7 +8,7 @@ from analysis.models import AnalysisModel
 from analysis.enums.status_enum import StatusEnum
 from cloudinary.exceptions import NotFound
 from django.db.models import Count
-from datetime import datetime
+from django.utils import timezone
 
 status_service = StatusService()
 
@@ -83,20 +84,21 @@ class DashboardAPIView(APIView):
         """Dashboard pour admin"""
         try:
             # Platform Overview
-            total_users = CustomUserModel.objects.filter(status=True).count()
+            users = CustomUserModel.objects.exclude(role=RoleEnum.ADMIN)
+            total_users = users.count()
             
             # Utilisateurs actifs ce mois
-            current_month_start = datetime.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
-            active_users = CustomUserModel.objects.filter(
+            current_month_start = timezone.now().replace(day=1, hour=0, minute=0, second=0, microsecond=0)
+            active_users = users.filter(
                 status=True,
-                last_login__gte=current_month_start
             ).count()
             
+            
             # Nouveaux utilisateurs ce mois
-            new_users_this_month = CustomUserModel.objects.filter(
+            new_users_this_month = users.filter(
                 status=True,
                 date_joined__gte=current_month_start
-            ).count()
+            )
             
             # Utilisateurs inactifs
             inactive_users = total_users - active_users
@@ -104,9 +106,11 @@ class DashboardAPIView(APIView):
             platform_overview = {
                 "total_users": total_users,
                 "active_users": active_users,
-                "new_users_this_month": new_users_this_month,
+                "new_users_this_month": new_users_this_month.count(),
                 "inactive_users": inactive_users,
             }
+            
+            
             
             # Analyses Stats
             all_analyses = AnalysisModel.objects.filter(status=True)
@@ -123,9 +127,14 @@ class DashboardAPIView(APIView):
             type_counts = all_analyses.exclude(type__isnull=True).values('type').annotate(count=Count('id'))
             for item in type_counts:
                 analyses_by_type[item['type']] = item['count']
-            
+            users_data = UserSerializer(users, many=True).data
+            for user_data in users_data:
+                user_data['last_login'] = users.filter(email=user_data['email']).first().last_login
+                user_analyses = all_analyses.filter(user__email=user_data['email'])
+                user_data['analyses_number'] = user_analyses.count()
             return status_service.status200(data={
                 "platform_overview": platform_overview,
+                'users': user_data,
                 "analyses_stats": analyses_stats,
                 "analyses_by_type": analyses_by_type,
             })
