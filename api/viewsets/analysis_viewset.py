@@ -105,7 +105,7 @@ class AnalysisViewSet(ModelViewSet):
         except Exception as e:
             return status_service.status500(data=str(e))
     
-    @action(detail=False, methods=['patch'], url_path='reports')
+    @action(detail=False, methods=['get'], url_path='reports')
     def reports(self, request, *args, **kwargs):
         try:
             if request.user.role == RoleEnum.ADMIN:
