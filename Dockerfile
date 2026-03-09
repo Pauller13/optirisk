@@ -13,6 +13,9 @@ COPY requirements.txt .
 
 # Installer dépendances système et Python
 RUN apt-get update && apt-get install -y \
+    gcc \
+    libcairo2 \
+    libcairo2-dev \
     pkg-config \
     default-libmysqlclient-dev \
     build-essential \

@@ -6,10 +6,13 @@ from api.serializers import (
     AnalysisDetailSerializer,
     AnalysisCreateSerializer,
 )
+from base.services.report_generator_service import ReportGeneratorService
 from base.services.status_service import StatusService
 from user.enums.role_enum import RoleEnum
 from user.models.admin_log_model import AdminLogModel
+from analysis.enums import StatusEnum
 
+report_service = ReportGeneratorService()
 status_service = StatusService()
 
 
@@ -98,6 +101,7 @@ class AnalysisViewSet(ModelViewSet):
             AdminLogModel.objects.create(level="INFO", action="ANALYSIS", message=f"Utilisateur {request.user.last_name} {request.user.first_name} a fais l'atelier {workshop}.")
             serializer = AnalysisDetailSerializer(analysis)
             if workshop == 5:
+                report_service.generate_reports(analysis)
                 AdminLogModel.objects.create(level="INFO", action="ANALYSIS", message=f"Utilisateur {request.user.last_name} {request.user.first_name} a terminé l'analyse.")
             return status_service.status200(data=serializer.data)
         except AnalysisModel.DoesNotExist:
@@ -109,17 +113,28 @@ class AnalysisViewSet(ModelViewSet):
     def reports(self, request, *args, **kwargs):
         try:
             if request.user.role == RoleEnum.ADMIN:
-                queryset = self.get_queryset().filter(status=True)
+                queryset = self.get_queryset().filter(status=True, status_analysis=StatusEnum.COMPLETED)
+                reports = queryset.values(
+                    "technical_report",
+                    "executive_report",
+                    "title",
+                    "type",
+                    "updated_at",
+                    "organization",
+                    "user__company_name"
+                )
+                for report in reports:
+                    report["company_name"] = report.pop("user__company_name")
             else:
-                queryset = self.get_queryset().filter(user=request.user, status=True)
-            
-            return status_service.status200(data={
-                'reports': {
-                    'technical': queryset.technical_report,
-                    'executive': queryset.executive_report
-                },
-                'title': queryset.title
-                
-            })
+                queryset = self.get_queryset().filter(user=request.user, status=True, status_analysis=StatusEnum.COMPLETED)
+                reports = queryset.values(
+                    "technical_report",
+                    "executive_report",
+                    "title",
+                    "type",
+                    "organization",
+                    "updated_at"
+                )
+            return status_service.status200(data=list(reports))
         except Exception as e:
-            return status_service.status500(data=str(e))
+            return status_service.status500(data={},message=str(e))
