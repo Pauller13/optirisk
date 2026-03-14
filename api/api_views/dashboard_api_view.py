@@ -68,9 +68,9 @@ class DashboardAPIView(APIView):
                     "organization": analysis.organization,
                     "status": analysis.status_analysis,
                     "type": analysis.type,
-                    "created_at": analysis.created_at.isoformat(),
+                    "created_at": analysis.created_at.strftime("%d/%m/%Y %H:%M"),
                     "progress": round(progress, 2),
-                    "last_updated": analysis.updated_at.isoformat(),
+                    "last_updated": analysis.updated_at.strftime("%d/%m/%Y %H:%M"),
                 })
             
             return status_service.status200(data={

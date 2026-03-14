@@ -37,7 +37,23 @@ class CustomUserViewSet(ModelViewSet):
             return []
         return [IsAuthenticated()]
 
+    def list(self, request, *args, **kwargs):
+        queryset = self.filter_queryset(self.get_queryset())
+        users = queryset.values(
+            'first_name',
+            'last_name',
+            'email',
+            'company_name',
+            'role',
+            'slug',
+            'is_2fa_enabled',
+            'token_number',
+            'status'
+        )
 
+        
+        return status_service.status200(data=list(users))
+    
     def create(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         if not serializer.is_valid():
@@ -176,7 +192,7 @@ class CustomUserViewSet(ModelViewSet):
     @swagger_auto_schema(responses={200: openapi.Response("Utilisateur suspendu")}, request_body= no_body)
     def suspend_user(self, request, *args, **kwargs):
         try:
-            instance = CustomUserModel.objects.filter(id=request.user.id).first()
+            instance = self.get_object()
             instance.status = False
             instance.save()
             return status_service.status200(data={}, message="Utilisateur suspendu")
@@ -186,7 +202,7 @@ class CustomUserViewSet(ModelViewSet):
     @swagger_auto_schema(responses={200: openapi.Response("Utilisateur activé")}, request_body= no_body)
     def active_user(self, request, *args, **kwargs):
         try:
-            instance = CustomUserModel.objects.filter(id=request.user.id).first()
+            instance = self.get_object()
             instance.status = True
             instance.save()
             return status_service.status200(data={}, message="Utilisateur activé")

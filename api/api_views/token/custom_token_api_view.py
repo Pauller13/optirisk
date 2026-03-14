@@ -1,4 +1,5 @@
 import logging
+from user.enums.role_enum import RoleEnum
 from user.models.admin_log_model import AdminLogModel
 from base.services.status_service import StatusService
 from rest_framework.views import APIView
@@ -68,11 +69,12 @@ class CustomTokenView(APIView):
 
         # Check password
         if not user.check_password(password):
-            AdminLogModel.objects.create(
-                level="WARNING",
-                action="LOGIN",
-                message=f"Echec de l'authentification pour mauvais password pour l'email '{email}'.",
-            )
+            if user.role != RoleEnum.ADMIN:
+                AdminLogModel.objects.create(
+                    level="WARNING",
+                    action="LOGIN",
+                    message=f"Echec de l'authentification pour mauvais password pour l'email '{email}'.",
+                )
             return status_service.status401(
                 data={}, 
                 message="Email ou mot de passe invalide"
@@ -80,22 +82,24 @@ class CustomTokenView(APIView):
 
         # Check if account is active
         if not user.is_active:
-            AdminLogModel.objects.create(
-                level="WARNING",
-                action="LOGIN",
-                message=f"Echec de l'authentification pour compte inactif '{email}'.",
-            )
+            if user.role != RoleEnum.ADMIN:
+                AdminLogModel.objects.create(
+                    level="WARNING",
+                    action="LOGIN",
+                    message=f"Echec de l'authentification pour compte inactif '{email}'.",
+                )
             return status_service.status401(
                 data={}, 
                 message="Compte désactivé, veuillez utiliser le lien d'activation envoyé par email."
             )
 
         if not user.status:
-            AdminLogModel.objects.create(
-                level="WARNING",
-                action="LOGIN",
-                message=f"Echec de l'authentification pour compte suspendu '{email}' from IP {ip} at {now()}.",
-            )
+            if user.role != RoleEnum.ADMIN:
+                AdminLogModel.objects.create(
+                    level="WARNING",
+                    action="LOGIN",
+                    message=f"Echec de l'authentification pour compte suspendu '{email}' from IP {ip} at {now()}.",
+                )
             return status_service.status401(
                 data={}, 
                 message="Compte suspendu, veuillez contacter l'administrateur."
@@ -103,11 +107,12 @@ class CustomTokenView(APIView):
 
         # Handle 2FA flow
         if user.is_2fa_enabled:
-            AdminLogModel.objects.create(
-                level="INFO",
-                action="LOGIN",
-                message=f"Connexion reussie pour l'utilisateur '{user.last_name} {user.first_name}'. Autenthication 2FA requise",
-            )
+            if user.role != RoleEnum.ADMIN:
+                AdminLogModel.objects.create(
+                    level="INFO",
+                    action="LOGIN",
+                    message=f"Connexion reussie pour l'utilisateur '{user.last_name} {user.first_name}'. Autenthication 2FA requise",
+                )
             return status_service.status200(
                 data={
                     "two_fa_active": True,
@@ -115,11 +120,12 @@ class CustomTokenView(APIView):
                 }, 
                 message="2FA requis"
             )
-        AdminLogModel.objects.create(
-            level="INFO",
-            action="LOGIN",
-            message=f"Connexion reussie pour l'utilisateur '{user.last_name} {user.first_name}' .",
-        )
+        if user.role != RoleEnum.ADMIN:
+            AdminLogModel.objects.create(
+                level="INFO",
+                action="LOGIN",
+                message=f"Connexion reussie pour l'utilisateur '{user.last_name} {user.first_name}' .",
+            )
         # Normal login flow (no 2FA)
         refresh = RefreshToken.for_user(user)
         access = refresh.access_token
