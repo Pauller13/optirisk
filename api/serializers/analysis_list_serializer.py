@@ -8,7 +8,8 @@ class AnalysisListSerializer(serializers.ModelSerializer):
         read_only=True
     )
     progress_percentage = serializers.SerializerMethodField()
-
+    created_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
+    updated_at = serializers.DateTimeField(format="%Y-%m-%d %H:%M:%S")
     class Meta:
         model = AnalysisModel
         fields = [

@@ -48,9 +48,14 @@ class CustomUserViewSet(ModelViewSet):
             'slug',
             'is_2fa_enabled',
             'token_number',
-            'status'
+            'status',
+            'last_login',
+            'date_joined',
         )
-
+        
+        for user in users:
+            user['last_login'] = user['last_login'].strftime('%Y-%m-%d %H:%M:%S')
+            user['date_joined'] = user['date_joined'].strftime('%Y-%m-%d %H:%M:%S')
         
         return status_service.status200(data=list(users))
     

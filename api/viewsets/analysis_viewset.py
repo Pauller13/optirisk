@@ -113,28 +113,34 @@ class AnalysisViewSet(ModelViewSet):
     def reports(self, request, *args, **kwargs):
         try:
             if request.user.role == RoleEnum.ADMIN:
-                queryset = self.get_queryset().filter(status=True, status_analysis=StatusEnum.COMPLETED)
-                reports = queryset.values(
-                    "technical_report",
-                    "executive_report",
-                    "title",
-                    "type",
-                    "updated_at",
-                    "organization",
-                    "user__company_name"
+                queryset = self.get_queryset().filter(
+                    status=True,
+                    status_analysis=StatusEnum.COMPLETED
                 )
-                for report in reports:
-                    report["company_name"] = report.pop("user__company_name")
             else:
-                queryset = self.get_queryset().filter(user=request.user, status=True, status_analysis=StatusEnum.COMPLETED)
-                reports = queryset.values(
-                    "technical_report",
-                    "executive_report",
-                    "title",
-                    "type",
-                    "organization",
-                    "updated_at"
+                queryset = self.get_queryset().filter(
+                    user=request.user,
+                    status=True,
+                    status_analysis=StatusEnum.COMPLETED
                 )
-            return status_service.status200(data=list(reports))
+
+            reports = []
+            for obj in queryset:
+                report = {
+                    "title": obj.title,
+                    "type": obj.type,
+                    "organization": obj.organization,
+                    "updated_at": obj.updated_at,
+                    "technical_report": obj.technical_report.url if obj.technical_report else None,
+                    "executive_report": obj.executive_report.url if obj.executive_report else None,
+                }
+
+                if request.user.role == RoleEnum.ADMIN:
+                    report["company_name"] = obj.user.company_name
+
+                reports.append(report)
+
+            return status_service.status200(data=reports)
+
         except Exception as e:
-            return status_service.status500(data={},message=str(e))
+            return status_service.status500(data={}, message=str(e))
