@@ -63,6 +63,71 @@ class ReportGeneratorService:
                 'cartographie': analysis.workshop3_data.get('cartographie', {})
             }
         
+        # Structurer workshop4 avec assets + matrice des risques
+        if analysis.workshop4_data:
+            operational_scenarios = analysis.workshop4_data.get('operationalScenarios', [])
+            # Matrice Gravité x Vraisemblance
+            gravity_levels = ['G5', 'G4', 'G3', 'G2', 'G1']
+            likelihood_levels = ['Très faible', 'Faible', 'Moyenne', 'Élevée', 'Très élevée']
+            risk_matrix = {g: {l: [] for l in likelihood_levels} for g in gravity_levels}
+
+            def normalize_likelihood(value):
+                if not isinstance(value, str):
+                    return 'Moyenne'
+                val = value.strip().lower()
+                if 'très faible' in val or 'tres faible' in val or val == 'g1':
+                    return 'Très faible'
+                if 'faible' in val and 'très' not in val:
+                    return 'Faible'
+                if 'moyenne' in val or 'moyen' in val or val == 'g3':
+                    return 'Moyenne'
+                if 'élevée' in val or 'elevee' in val or val == 'g4':
+                    return 'Élevée'
+                if 'très élevée' in val or 'tres elevee' in val or val == 'g5':
+                    return 'Très élevée'
+                return 'Moyenne'
+
+            for scenario in operational_scenarios:
+                scen_gravity = str(scenario.get('gravity', '')).strip()
+                if scen_gravity not in gravity_levels:
+                    # si c'est sous forme de niveau texte
+                    if scen_gravity.lower().startswith('g') and scen_gravity[1:].isdigit():
+                        key = scen_gravity.upper()
+                        if key in gravity_levels:
+                            scen_gravity = key
+                        else:
+                            scen_gravity = 'G3'
+                    else:
+                        scen_gravity = 'G3'
+
+                likelihood_value = scenario.get('likelihood') or scenario.get('probability') or scenario.get('vraisemblance') or ''
+                scen_likelihood = normalize_likelihood(str(likelihood_value))
+
+                risk_matrix[scen_gravity][scen_likelihood].append(scenario)
+
+            risk_matrix_rows = []
+            for g in gravity_levels:
+                row = {
+                    'gravity': g,
+                    'cells': []
+                }
+                for l in likelihood_levels:
+                    count = len(risk_matrix[g][l])
+                    row['cells'].append({
+                        'likelihood': l,
+                        'count': count,
+                        'scenarios': risk_matrix[g][l],
+                    })
+                risk_matrix_rows.append(row)
+
+            workshop4 = {
+                'supportingAssets': analysis.workshop4_data.get('supportingAssets', []),
+                'operationalScenarios': operational_scenarios,
+                'riskMatrixRows': risk_matrix_rows,
+                'riskMatrixTotal': len(operational_scenarios),
+            }
+            context['workshop4'] = workshop4
+
         # Structurer workshop5 avec mesures
         if analysis.workshop5_data:
             context['workshop5'] = analysis.workshop5_data
