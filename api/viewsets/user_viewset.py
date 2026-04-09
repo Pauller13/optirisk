@@ -54,7 +54,11 @@ class CustomUserViewSet(ModelViewSet):
         )
         
         for user in users:
-            user['last_login'] = user['last_login'].strftime('%Y-%m-%d %H:%M:%S')
+            user['last_login'] = (
+                user['last_login'].strftime('%Y-%m-%d %H:%M:%S')
+                if user['last_login']
+                else None
+            )
             user['date_joined'] = user['date_joined'].strftime('%Y-%m-%d %H:%M:%S')
         
         return status_service.status200(data=list(users))
